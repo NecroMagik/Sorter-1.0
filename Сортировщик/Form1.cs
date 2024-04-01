@@ -156,6 +156,8 @@ namespace Сортировщик
         private void button3_Click(object sender, EventArgs e)     //Проверка обновления
         {
             MessageBox.Show("Скоро станет доступно");
+
+            // Проверка веток репозитория и взаимодействие с ними
         }
 
         #endregion
@@ -262,8 +264,8 @@ namespace Сортировщик
                     //Вывод списка картинрок
                     if(matching_Photo.Length > 0)
                     {
-                        string message = $"Нашёл файлы в {(checkBox5.Checked ? "указанной папке и её подпапках" : "указанной папке")}\n";
-                        DialogResult result1 = MessageBox.Show(message, "Показать их?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        string message = $"Найдены файлы в {(checkBox5.Checked ? "указанной папке и её подпапках. Показать их?" : "указанной папке. Показать их")}\n";
+                        DialogResult result1 = MessageBox.Show(message, "Я кое-что нашёл!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (result1 == DialogResult.Yes)
                         {
                             FileBrowser F3 = new FileBrowser(matching_Photo);
@@ -808,6 +810,11 @@ namespace Сортировщик
         private void button27_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("ttre");
         }
     }
 }

@@ -296,9 +296,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 53);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(181, 13);
+            this.label3.Size = new System.Drawing.Size(193, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Дата последих действий: 21.09.23";
+            this.label3.Text = "Дата последих действий: 01.04.2024";
             // 
             // label2
             // 
@@ -670,6 +670,7 @@
             this.button12.TabIndex = 3;
             this.button12.Text = "English";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // checkBox5
             // 
