@@ -49,6 +49,27 @@ namespace Сортировщик
                 L = Convert.ToInt32(Lang);
                 label5.Text = "Проверка переменной языка:   " + Lang;
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             else
             {
                 button1.Text = "";
@@ -523,7 +544,12 @@ namespace Сортировщик
             MessageBox.Show("Смена языка не доступна из-за санкций. Обратитесь к разработчику", "Ошибка 993", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void button13_Click(object sender, EventArgs e)
+        private void button12_Click(object sender, EventArgs e)     //Кнопка английского языка
+        {
+            MessageBox.Show("Смена языка не доступна из-за санкций. Обратитесь к разработчику", "Ошибка 993", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void button13_Click(object sender, EventArgs e)     //Кнопка русского языка
         {
             Lang = "1";
             
@@ -812,9 +838,6 @@ namespace Сортировщик
 
         }
 
-        private void button12_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("ttre");
-        }
+        
     }
 }
