@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Reflection;
 
 namespace Сортировщик
 {
@@ -18,8 +19,16 @@ namespace Сортировщик
             InitializeComponent();
         }
 
+        
+
         private void Form1_Load(object sender, EventArgs e)  //Загрузка формы
         {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            var status = "Реализовывание переноса файлов";
+            var LastUp = "17.09.2024";
+            label1.Text = $"Версия: {version}";
+            label2.Text = $"Статус: {status}";
+            label3.Text = $"Последние изменения: {LastUp}";
             b2 = 1;
             tabset = 0;
             #region ПОДСКАЗКИ
@@ -530,6 +539,7 @@ namespace Сортировщик
             {
                 writer.Write(Lang);
             }
+
             button1.Text = "Выбрать папку";
             button2.Text = "Выполнить";
             button9.Text = "Выход";
@@ -599,11 +609,11 @@ namespace Сортировщик
             label1.ForeColor = SystemColors.Control;
             label2.ForeColor = SystemColors.Control;
             label3.ForeColor = SystemColors.Control;
-            //label5.ForeColor = SystemColors.Control;
-            //label6.ForeColor = SystemColors.Control;
-            //label7.ForeColor = SystemColors.Control;
-            //label8.ForeColor = SystemColors.Control;
-            //label9.ForeColor = SystemColors.Control;
+            label5.ForeColor = SystemColors.Control;
+            label6.ForeColor = SystemColors.Control;
+            label7.ForeColor = SystemColors.Control;
+            label8.ForeColor = SystemColors.Control;
+            label9.ForeColor = SystemColors.Control;
 
         }
 
@@ -745,7 +755,7 @@ namespace Сортировщик
         {
             tabControl1.TabPages.Remove(tabPage4);
             dev = 0;
-            d1 = 5;
+            d1 = 0;
             if (dm == -1)
             {
                 Light();
@@ -806,6 +816,11 @@ namespace Сортировщик
         }
 
         private void button27_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void folderBrowserDialog2_HelpRequest(object sender, EventArgs e)
         {
 
         }
