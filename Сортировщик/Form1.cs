@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Reflection;
 
 namespace Сортировщик
 {
@@ -18,8 +19,20 @@ namespace Сортировщик
             InitializeComponent();
         }
 
+        public void INFORMATION()  //Информация о приложении
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            var status = "Попытка реализовать обновление приложения";
+            var LastUp = "27.09.2024";
+            label1.Text = $"Версия: {version}";
+            label2.Text = $"Статус: {status}";
+            label3.Text = $"Последние изменения: {LastUp}";
+        }
+
         private void Form1_Load(object sender, EventArgs e)  //Загрузка формы
         {
+            INFORMATION();
+
             b2 = 1;
             tabset = 0;
             #region ПОДСКАЗКИ
