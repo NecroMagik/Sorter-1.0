@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Net.Http;
 
 namespace Сортировщик
 {
@@ -23,7 +24,7 @@ namespace Сортировщик
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var status = "Попытка реализовать обновление приложения";
-            var LastUp = "27.09.2024";
+            var LastUp = "08.10.2024";
             label1.Text = $"Версия: {version}";
             label2.Text = $"Статус: {status}";
             label3.Text = $"Последние изменения: {LastUp}";
@@ -62,27 +63,6 @@ namespace Сортировщик
                 L = Convert.ToInt32(Lang);
                 label5.Text = "Проверка переменной языка:   " + Lang;
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             else
             {
                 button1.Text = "";
@@ -178,7 +158,7 @@ namespace Сортировщик
 
 
 
-            
+
 
         #endregion
 
@@ -187,11 +167,81 @@ namespace Сортировщик
 
         //рописать алгоритм проверки обновлений на выделенном сервере
 
+        public Version GetCurrentVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version;
+        }
+
+
+        public async Task<string> GetLatestVersionFromGitHubAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = "https://raw.githubusercontent.com/NecroMagik/Sorter-1.0/tree/Release/releases/version.txt";
+                    string response = await client.GetStringAsync(url);
+                    return response.Trim(); // Убираем возможные пробелы или переносы строк
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при проверке обновлений: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
+        public async Task CheckForUpdatesAsync()
+        {
+            Version currentVersion = GetCurrentVersion();  // Получаем текущую версию
+            string latestVersionStr = await GetLatestVersionFromGitHubAsync();  // Загружаем последнюю версию с GitHub
+
+            if (!string.IsNullOrEmpty(latestVersionStr) && Version.TryParse(latestVersionStr, out Version latestVersion))
+            {
+                if (latestVersion > currentVersion)  // Если версия на GitHub новее
+                {
+                    DialogResult result = MessageBox.Show($"Доступна новая версия: {latestVersion}. Хотите обновить?", "Обновление", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        //wait DownloadUpdateAsync(latestVersion.ToString());  // Метод для загрузки обновления
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("У вас установлена последняя версия.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не удалось получить версию с GitHub.","Ошибка 404",MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void button3_Click(object sender, EventArgs e)     //Проверка обновления
         {
-            MessageBox.Show("Скоро станет доступно");
+            GetLatestVersionFromGitHubAsync();
+            CheckForUpdatesAsync();
 
             // Проверка веток репозитория и взаимодействие с ними
+        }
+
+        #endregion
+
+        #region == Перехват команды Alt+F4 ==
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_CLOSE = 0x0010;
+            if (m.Msg == WM_CLOSE) 
+            {
+                if (ConfirmDialogRU())
+                {
+                    Application.Exit();
+                }
+                return;
+            }
+            base.WndProc(ref m);
         }
 
         #endregion
@@ -201,7 +251,7 @@ namespace Сортировщик
 
         bool ConfirmDialogRU() //Диалог выхода
         {
-            DialogResult confirm = MessageBox.Show("Во избежание случайного закрытия программы пожалуйста подтвердите выход из приложения.", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult confirm = MessageBox.Show("Во избежание случайного закрытия программы пожалуйста подтвердите выход из приложения.", "Закрыть приложение?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)
             {
                 return true;
@@ -640,11 +690,11 @@ namespace Сортировщик
             label1.ForeColor = SystemColors.Control;
             label2.ForeColor = SystemColors.Control;
             label3.ForeColor = SystemColors.Control;
-            //label5.ForeColor = SystemColors.Control;
-            //label6.ForeColor = SystemColors.Control;
-            //label7.ForeColor = SystemColors.Control;
-            //label8.ForeColor = SystemColors.Control;
-            //label9.ForeColor = SystemColors.Control;
+            label5.ForeColor = SystemColors.Control;
+            label6.ForeColor = SystemColors.Control;
+            label7.ForeColor = SystemColors.Control;
+            label8.ForeColor = SystemColors.Control;
+            label9.ForeColor = SystemColors.Control;
 
         }
 
@@ -693,6 +743,15 @@ namespace Сортировщик
             checkBox3.ForeColor = SystemColors.ControlText;
             checkBox4.ForeColor = SystemColors.ControlText;
             checkBox5.ForeColor = SystemColors.ControlText;
+                                                   
+            label3.ForeColor = SystemColors.ControlText;
+            label5.ForeColor = SystemColors.ControlText;
+            label6.ForeColor = SystemColors.ControlText;
+            label7.ForeColor = SystemColors.ControlText;
+            label8.ForeColor = SystemColors.ControlText;
+            label9.ForeColor = SystemColors.ControlText;
+            label1.ForeColor = SystemColors.ControlText;
+            label2.ForeColor = SystemColors.ControlText;  
 
             dmo = "-1";
             File.WriteAllText(darkp, dmo);

@@ -386,12 +386,12 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.groupBox2);
-            this.tabPage6.Controls.Add(this.button24);
             this.tabPage6.Controls.Add(this.groupBox1);
             this.tabPage6.Controls.Add(this.button23);
             this.tabPage6.Controls.Add(this.button20);
             this.tabPage6.Controls.Add(this.button19);
             this.tabPage6.Controls.Add(this.button18);
+            this.tabPage6.Controls.Add(this.button24);
             this.tabPage6.Controls.Add(this.button17);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
@@ -408,7 +408,7 @@
             this.groupBox2.Controls.Add(this.checkBox3);
             this.groupBox2.Controls.Add(this.checkBox2);
             this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Location = new System.Drawing.Point(6, 78);
+            this.groupBox2.Location = new System.Drawing.Point(4, 78);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(279, 154);
             this.groupBox2.TabIndex = 14;
@@ -471,11 +471,11 @@
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(9, 78);
+            this.button24.Location = new System.Drawing.Point(6, 78);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(276, 37);
             this.button24.TabIndex = 13;
-            this.button24.Text = "Проверить";
+            this.button24.Text = "Проверить пути к библиотекам";
             this.button24.UseVisualStyleBackColor = true;
             this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
