@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
 using System.Net.Http;
+using System.Threading;
 
 namespace Сортировщик
 {
@@ -23,8 +24,10 @@ namespace Сортировщик
         public void INFORMATION()  //Информация о приложении
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var status = "Попытка реализовать обновление приложения";
-            var LastUp = "08.10.2024";
+            var status = "Реализация переноса картинок";
+            var LastUp = "18.11.2024";
+            var AppName = "Alpha";
+            this.Text = $"Сортировщик ({version})  --  {AppName}";
             label1.Text = $"Версия: {version}";
             label2.Text = $"Статус: {status}";
             label3.Text = $"Последние изменения: {LastUp}";
@@ -165,7 +168,7 @@ namespace Сортировщик
         //Обновление приложения
         #region U P D A T E S
 
-        //рописать алгоритм проверки обновлений на выделенном сервере
+        //Прописать алгоритм проверки обновлений на выделенном сервере
 
         public Version GetCurrentVersion()
         {
@@ -274,6 +277,7 @@ namespace Сортировщик
                 return false ;
             }
         }
+
         #endregion
 
         // Ядро кода
@@ -295,14 +299,90 @@ namespace Сортировщик
         string darkp = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\dark.txt";
 
 
+        /// <summary>
+        /// 
+        /// Форматы файлов для поиска
+        /// 
+        /// </summary>
         string[] photo_format = { ".png", ".gif", ".jpg" };
+        string[] document_format = { ".doc", ".docx", ".txt", ".pptx", ".xlx" };
+        string[] video_format = { ".mp4", ".wmv" };
+        string[] musical_format = { ".mp3", "ogg" };
         #endregion
 
         #region Standart Methods
 
-        private void MovePic_Standart()
-        {
+        int abort = 0;
 
+        /// <summary>
+        /// Поиск и перенос картинок
+        /// </summary>
+        private async void MovePic_Standart()
+        {
+            progressBar1.Visible = true;
+            //Формат файлов
+
+            //Поиск картинок в папке или везде
+            string[] matching_Photo = Directory.GetFiles(folderPath, "*.*", checkBox5.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+            .Where(file => photo_format.Any(x => file.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
+            .ToArray();
+
+
+            //Вывод списка
+            if (matching_Photo.Length > 0)
+            {
+                string message = $"Найдены файлы в {(checkBox5.Checked ? "указанной папке и её подпапках. Показать их?" : "указанной папке. Показать их")}\n";
+                DialogResult result1 = MessageBox.Show(message, "Я кое-что нашёл!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result1 == DialogResult.Yes)
+                {
+                    FileBrowser F3 = new FileBrowser(matching_Photo);
+                    F3.ShowDialog();
+                }
+
+
+                DialogResult result2 = MessageBox.Show("Выполнить перенос?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result2 == DialogResult.Yes)
+                {
+                    //Прописать скрипт переноса картинок
+                }
+                else
+                {
+                    MessageBox.Show("Прервано пользователем", "Отмена", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    abort = 1;
+                }
+            }
+            else
+            {
+                MessageBox.Show("К сожалению, файлы не были обнаружены =(" +
+                    $"\nПопробуйте {(checkBox5.Checked ? "выбрать другую папку" : "поискать во всей папке, выбрав пункт (Искать везде)")}");
+                abort = 1;
+            }
+
+
+            if (abort == 0)
+            {
+                while (progressBar1.Value < 100)
+                {
+                    if (progressBar1.Value >= 99)
+                    {
+                        progressBar1.Value = 100;
+                        MessageBox.Show("Проверка завершена");
+                        progressBar1.Visible = false;
+                    }
+                    else
+                    {
+                        progressBar1.Style = ProgressBarStyle.Continuous;
+                        progressBar1.Value++;
+                        await Task.Delay(20);
+                    }
+                }
+                progressBar1.Value = 0;
+            }
+            else
+            {
+                progressBar1.Visible = false;
+                progressBar1.Value = 0;
+            }
         }
 
         #endregion
@@ -327,9 +407,8 @@ namespace Сортировщик
         }
 
         int p;
-        private void button2_Click(object sender, EventArgs e)   //Поиск файйлов и перенос
+        private void button2_Click(object sender, EventArgs e)   //Поиск файлов и перенос
         {
-            int abort = 0;
             if (b2 == 0)
             {
                 MessageBox.Show("Выберите папку", "Внимание");
@@ -338,66 +417,11 @@ namespace Сортировщик
             {
                 if (b2 == 1)
                 {
-                    progressBar1.Visible = true;
-                    //Формат файлов
-                    
-                    //Поиск картинок в папке или везде
-                    string[] matching_Photo = Directory.GetFiles(folderPath, "*.*", checkBox5.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
-                    .Where(file => photo_format.Any(x => file.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
-                    .ToArray();
-                    //Вывод списка картинрок
-                    if(matching_Photo.Length > 0)
-                    {
-                        string message = $"Найдены файлы в {(checkBox5.Checked ? "указанной папке и её подпапках. Показать их?" : "указанной папке. Показать их")}\n";
-                        DialogResult result1 = MessageBox.Show(message, "Я кое-что нашёл!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result1 == DialogResult.Yes)
-                        {
-                            FileBrowser F3 = new FileBrowser(matching_Photo);
-                            F3.ShowDialog();
-                        }
-                        
-
-                        DialogResult result2 = MessageBox.Show("Выполнить перенос?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result2 == DialogResult.Yes)
-                        {
-                            //Прописать скрипт переноса картинок
-                        }
-                        else
-                        {
-                            MessageBox.Show("Прервано пользователем", "Отмена", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            abort = 1;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("К сожалению, файлы не были обнаружены =(" +
-                            $"\nПопробуйте {(checkBox5.Checked ? "выбрать другую папку" : "поискать во всей папке, выбрав пункт (Искать везде)")}");
-                        abort = 1;
-                    }
+                    progressBar1.Style = ProgressBarStyle.Marquee;
+                    progressBar1.MarqueeAnimationSpeed = 5;
 
 
-                    if(abort == 0)
-                    {
-                        while (progressBar1.Value < 100)
-                        {
-                            if (progressBar1.Value >= 99)
-                            {
-                                progressBar1.Value = 100;
-                                MessageBox.Show("Проверка завершена");
-                                progressBar1.Visible = false;
-                            }
-                            else
-                            {
-                                progressBar1.Value++;
-                            }
-                        }
-                        progressBar1.Value = 0;
-                    }
-                    else
-                    {
-                        progressBar1.Visible = false;
-                        progressBar1.Value = 0;
-                    }
+                    MovePic_Standart();
                 }
             }
         }
