@@ -24,8 +24,8 @@ namespace Сортировщик
         public void INFORMATION()  //Информация о приложении
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var status = "Реализация переноса картинок";
-            var LastUp = "18.11.2024";
+            var status = "Реализация переноса";
+            var LastUp = "21.11.2024";
             var AppName = "Alpha";
             this.Text = $"Сортировщик ({version})  --  {AppName}";
             label1.Text = $"Версия: {version}";
@@ -40,25 +40,18 @@ namespace Сортировщик
             b2 = 1;
             tabset = 0;
             #region ПОДСКАЗКИ
-            checkBox5.Checked = true;
             checkBox5.Checked = false;
             #endregion
 
-            if(!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter")) //Проверка присутствия директории
+            string appDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "ZeN", "Sorter");     // Проверяем, существует ли директория приложения
+            if (!Directory.Exists(appDirectory))
             {
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter");
+                Directory.CreateDirectory(appDirectory);
             }
 
             this.Size = new System.Drawing.Size(336, 195);     //Задать размер формы
-            tabControl1.TabPages.Remove(tabPage1);
-            tabControl1.TabPages.Remove(tabPage2);
-            tabControl1.TabPages.Remove(tabPage3);
-            tabControl1.TabPages.Remove(tabPage4);
-            tabControl1.TabPages.Remove(tabPage5);
-            tabControl1.TabPages.Remove(tabPage6);
+            tabControl1.TabPages.Clear();
             groupBox2.Visible = false;     //Скрыть синхронизацию папок.
-
-            
 
             if (File.Exists(Langt))     //Проверка языка
             {
@@ -69,16 +62,18 @@ namespace Сортировщик
             else
             {
                 button1.Text = "";
+                button1.Enabled = false;
                 button2.Text = "";
+                button2.Enabled = false;
                 button4.Text = "";
+                button4.Enabled = false;
                 button9.Text = "";
+                button9.Enabled = false;
                 set = 1;
                 this.Size = new Size(336, 470);
                 Refresh();
                 tabControl1.TabPages.Add(tabPage5);
             }
-
-
 
             if (File.Exists(darkp))     //Проверка темы
             {
@@ -126,7 +121,7 @@ namespace Сортировщик
                 }
             }
 
-            if(button21.Text == "Облако*")
+            if (button21.Text == "Облако*")
             {
                 label7.Text = "тест пути: " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Изображения";
             }
@@ -135,10 +130,11 @@ namespace Сортировщик
                 label7.Text = "тест пути: " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + label4.Text + @"\Изображения";
             }
 
+            // Отображаем путь по умолчанию
             textBox1.Text = "По умолчанию: " + folderPath;
 
             progressBar1.Visible = false;
-            label9.Text = tabset.ToString();
+            label9.Text = "Значение открытой панели" + tabset.ToString();
         }
 
         #region ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
@@ -158,10 +154,6 @@ namespace Сортировщик
         string b2s = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\b2s.txt";     //Триггер переноса файлов.txt
         int b2 = 0;     //Проверка триггера для переноса
         int groupcloud = 0;     //Переменнвая вызова папок синхронезации и подтверждения облака
-
-
-
-
 
         #endregion
 
@@ -217,7 +209,7 @@ namespace Сортировщик
             }
             else
             {
-                MessageBox.Show("Не удалось получить версию с GitHub.","Ошибка 404",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Не удалось получить версию с GitHub.", "Ошибка 404", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -236,7 +228,7 @@ namespace Сортировщик
         protected override void WndProc(ref Message m)
         {
             const int WM_CLOSE = 0x0010;
-            if (m.Msg == WM_CLOSE) 
+            if (m.Msg == WM_CLOSE)
             {
                 if (ConfirmDialogRU())
                 {
@@ -268,13 +260,13 @@ namespace Сортировщик
         bool DeleteData()
         {
             DialogResult confirm = MessageBox.Show("Это удалит все введённые вами данные приложения. \nВ случае подтверждения приложение перезапустится", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if(confirm == DialogResult.Yes)
+            if (confirm == DialogResult.Yes)
             {
                 return true;
             }
             else
             {
-                return false ;
+                return false;
             }
         }
 
@@ -298,174 +290,367 @@ namespace Сортировщик
         string cloudR = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\cloudt.txt";
         string darkp = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\dark.txt";
 
-
-        /// <summary>
-        /// 
-        /// Форматы файлов для поиска
-        /// 
-        /// </summary>
-        string[] photo_format = { ".png", ".gif", ".jpg" };
-        string[] document_format = { ".doc", ".docx", ".txt", ".pptx", ".xlx" };
-        string[] video_format = { ".mp4", ".wmv" };
-        string[] musical_format = { ".mp3", "ogg" };
         #endregion
 
         #region Standart Methods
 
+        private void InitializeProgressBar(int maxValue)
+        {
+            progressBar1.Visible = true; // Делаем прогресс-бар видимым
+            progressBar1.Value = 0; // Сбрасываем прогресс
+            progressBar1.Maximum = maxValue; // Устанавливаем максимальное значение
+        }
+
         int abort = 0;
 
         /// <summary>
-        /// Поиск и перенос картинок
+        /// Выполняет поиск файлов в папке и подпапках (опционально) по категориям: фотографии, музыка, видео, документы.
         /// </summary>
-        private async void MovePic_Standart()
+        /// <param name="path">Путь к папке.</param>
+        /// <param name="includeSubfolders">Флаг поиска в подпапках.</param>
+        /// <returns>Словарь категорий с соответствующими списками файлов.</returns>
+        private async Task<Dictionary<string, List<string>>> SearchFilesAsync(string path, bool includeSubfolders)
         {
-            progressBar1.Visible = true;
-            //Формат файлов
+            var categories = new Dictionary<string, List<string>>
+    {
+        { "Фотографии", new List<string>() },
+        { "Музыка", new List<string>() },
+        { "Видео", new List<string>() },
+        { "Документы", new List<string>() }
+    };
 
-            //Поиск картинок в папке или везде
-            string[] matching_Photo = Directory.GetFiles(folderPath, "*.*", checkBox5.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
-            .Where(file => photo_format.Any(x => file.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
-            .ToArray();
+            var searchOption = includeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-
-            //Вывод списка
-            if (matching_Photo.Length > 0)
+            // Все форматы
+            var allFormats = new[]
             {
-                string message = $"Найдены файлы в {(checkBox5.Checked ? "указанной папке и её подпапках. Показать их?" : "указанной папке. Показать их")}\n";
-                DialogResult result1 = MessageBox.Show(message, "Я кое-что нашёл!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result1 == DialogResult.Yes)
+        "*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif",
+        "*.mp3", "*.wav", "*.flac", "*.aac", "*.ogg",
+        "*.mp4", "*.avi", "*.mkv", "*.mov",
+        "*.doc", "*.docx", "*.pdf", "*.xls", "*.xlsx", "*.txt"
+    };
+
+            InitializeProgressBar(allFormats.Length); // Инициализация прогресс-бара
+
+            int processedFormats = 0;
+
+            foreach (var ext in allFormats)
+            {
+                try
                 {
-                    FileBrowser F3 = new FileBrowser(matching_Photo);
-                    F3.ShowDialog();
+                    if (Array.Exists(new[] { "*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif" }, e => e == ext))
+                        categories["Фотографии"].AddRange(SafeGetFiles(path, ext, searchOption));
+                    if (Array.Exists(new[] { "*.mp3", "*.wav", "*.flac", "*.aac", "*.ogg" }, e => e == ext))
+                        categories["Музыка"].AddRange(SafeGetFiles(path, ext, searchOption));
+                    if (Array.Exists(new[] { "*.mp4", "*.avi", "*.mkv", "*.mov" }, e => e == ext))
+                        categories["Видео"].AddRange(SafeGetFiles(path, ext, searchOption));
+                    if (Array.Exists(new[] { "*.doc", "*.docx", "*.pdf", "*.xls", "*.xlsx", "*.txt" }, e => e == ext))
+                        categories["Документы"].AddRange(SafeGetFiles(path, ext, searchOption));
+                }
+                catch (Exception ex)
+                {
+                    // Логируем ошибку, если требуется
+                    Console.WriteLine($"Ошибка при поиске файлов с расширением {ext}: {ex.Message}");
                 }
 
-
-                DialogResult result2 = MessageBox.Show("Выполнить перенос?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result2 == DialogResult.Yes)
-                {
-                    //Прописать скрипт переноса картинок
-                }
-                else
-                {
-                    MessageBox.Show("Прервано пользователем", "Отмена", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    abort = 1;
-                }
+                processedFormats++;
+                progressBar1.Value = processedFormats;
+                await Task.Delay(10); // Эмуляция задержки для плавного обновления UI
             }
-            else
-            {
-                MessageBox.Show("К сожалению, файлы не были обнаружены =(" +
-                    $"\nПопробуйте {(checkBox5.Checked ? "выбрать другую папку" : "поискать во всей папке, выбрав пункт (Искать везде)")}");
-                abort = 1;
-            }
+
+            return categories;
+        }
 
 
-            if (abort == 0)
+        private IEnumerable<string> SafeGetFiles(string path, string searchPattern, SearchOption searchOption)
+        {
+            try
             {
-                while (progressBar1.Value < 100)
-                {
-                    if (progressBar1.Value >= 99)
-                    {
-                        progressBar1.Value = 100;
-                        MessageBox.Show("Проверка завершена");
-                        progressBar1.Visible = false;
-                    }
-                    else
-                    {
-                        progressBar1.Style = ProgressBarStyle.Continuous;
-                        progressBar1.Value++;
-                        await Task.Delay(20);
-                    }
-                }
-                progressBar1.Value = 0;
+                return Directory.GetFiles(path, searchPattern, searchOption); // Попытка получить файлы
             }
-            else
+            catch (UnauthorizedAccessException)
             {
-                progressBar1.Visible = false;
-                progressBar1.Value = 0;
+                Console.WriteLine($"Нет доступа к папке: {path}"); // Логирование
+                return Enumerable.Empty<string>(); // Возвращаем пустой список
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Ошибка при доступе к папке: {path}, сообщение: {ex.Message}");
+                return Enumerable.Empty<string>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Неизвестная ошибка: {ex.Message}");
+                return Enumerable.Empty<string>();
             }
         }
 
+
+        /// <summary>
+        /// Генерирует подробный список найденных файлов для отображения.
+        /// </summary>
+        /// <param name="filesByCategory">Словарь категорий с файлами.</param>
+        /// <returns>Список строк с названием файлов и их категориями.</returns>
+        private string GenerateFileList(Dictionary<string, List<string>> filesByCategory)
+        {
+            StringBuilder fileList = new StringBuilder();
+
+            foreach (var category in filesByCategory)
+            {
+                fileList.AppendLine($"Категория: {category.Key} ({category.Value.Count} файлов)");
+
+                foreach (var file in category.Value)
+                {
+                    fileList.AppendLine($"  - {Path.GetFileName(file)}"); // Добавляем имя файла
+                }
+
+                fileList.AppendLine(); // Пустая строка для разделения категорий
+            }
+
+            return fileList.ToString();
+        }
+
+        /// <summary>
+        /// Перемещает файлы в системные папки в зависимости от их категории.
+        /// </summary>
+        /// <param name="filesByCategory">Словарь с категориями и файлами.</param>
+        private async Task TransferFilesAsync(Dictionary<string, List<string>> filesByCategory)
+        {
+            // Определение целевых папок
+            string picturesPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            string musicPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            string videosPath = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var destinationPaths = new Dictionary<string, string>
+    {
+        { "Фотографии", picturesPath },
+        { "Музыка", musicPath },
+        { "Видео", videosPath },
+        { "Документы", documentsPath }
+    };
+
+            // Подсчитываем общее количество файлов
+            int totalFiles = filesByCategory.Values.Sum(list => list.Count);
+            InitializeProgressBar(totalFiles);
+
+            int processedFiles = 0;
+
+            foreach (var category in filesByCategory)
+            {
+                foreach (var file in category.Value)
+                {
+                    string fileName = Path.GetFileName(file);
+                    string destination = Path.Combine(destinationPaths[category.Key], fileName);
+
+                    try
+                    {
+                        if (!File.Exists(destination)) // Проверяем, существует ли файл в целевой папке
+                        {
+                            File.Move(file, destination);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при перемещении файла {file}: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    processedFiles++;
+                    progressBar1.Value = processedFiles; // Обновляем прогресс
+                    await Task.Delay(10); // Эмуляция задержки для плавного обновления UI
+                }
+            }
+
+            MessageBox.Show("Файлы успешно перемещены!", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            progressBar1.Visible = false; // Скрываем прогресс-бар после завершения
+        }
+
+
         #endregion
-        
+
         #region buttons
 
-        private void button1_Click(object sender, EventArgs e) //Выбор папки
+        private void button1_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
             {
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // Получаем путь к выбранной папке
-                    folderPath = folderBrowserDialog.SelectedPath;
-                    // Отображаем выбранный путь в TextBox
-                    textBox1.Text ="Выбрано: " + folderPath;
-                    //b2 = 1;
-                    button2.BackColor = Color.LightGreen;
-                    Refresh();
+                    folderPath = folderDialog.SelectedPath; // Сохраняем путь к выбранной папке
+                    textBox1.Text = "Выбрано: " + folderPath; // Отображаем путь
+                    button2.BackColor = Color.LightGreen; // Подсветка кнопки "Выполнить перенос"
                 }
             }
         }
 
-        int p;
-        private void button2_Click(object sender, EventArgs e)   //Поиск файлов и перенос
+        /// <summary>
+        /// Открывает окно FileBrowser с переданным списком файлов и логикой переноса.
+        /// </summary>
+        /// <param name="filesByCategory">Словарь категорий с файлами.</param>
+        private async void ShowFileListInNewWindow(Dictionary<string, List<string>> filesByCategory)
         {
-            if (b2 == 0)
+            // Создаём новое окно FileBrowser
+            var fileBrowser = new FileBrowser(
+                filesByCategory,
+                async () => await TransferFilesAsync(filesByCategory) // Передаём метод для асинхронного переноса
+            );
+
+            // Открываем FileBrowser как модальное окно
+            fileBrowser.ShowDialog();
+
+            // Проверяем, подтвердил ли пользователь перенос файлов
+            if (fileBrowser.TransferConfirmed)
             {
-                MessageBox.Show("Выберите папку", "Внимание");
+                MessageBox.Show("Файлы успешно перемещены!", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                if (b2 == 1)
+                MessageBox.Show("Перенос отменён.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+
+        int p;
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            // Шаг 1. Проверяем, выбрана ли папка
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                MessageBox.Show("Выберите папку перед началом выполнения!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                button1.BackColor = Color.LightCoral; // Подсветка кнопки "Выбор папки"
+                return;
+            }
+
+            // Шаг 2. Показываем пользователю, что идёт поиск файлов
+            progressBar1.Visible = true;
+            progressBar1.Value = 0;
+            textBox1.Text = "Идёт поиск файлов...";
+
+            // Шаг 3. Асинхронный поиск файлов
+            var filesByCategory = await SearchFilesAsync(folderPath, checkBox5.Checked);
+
+            // Шаг 4. Проверяем, найдены ли файлы
+            if (!filesByCategory.Values.Any(list => list.Count > 0))
+            {
+                progressBar1.Visible = false; // Скрываем прогресс-бар
+
+                // Если файлы не найдены, спрашиваем пользователя о дополнительных действиях
+                if (!checkBox5.Checked)
                 {
-                    progressBar1.Style = ProgressBarStyle.Marquee;
-                    progressBar1.MarqueeAnimationSpeed = 5;
+                    if (MessageBox.Show("Файлы не найдены. Искать в подпапках?", "Внимание", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        checkBox5.Checked = true; // Активируем поиск в подпапках
+                        return; // Повторяем процесс
+                    }
+                }
+                MessageBox.Show("Файлы не найдены. Выберите другую папку.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            // Шаг 5. Скрываем прогресс-бар, если поиск завершён успешно
+            progressBar1.Visible = false;
 
-                    MovePic_Standart();
+            // Шаг 6. Подсчитываем количество файлов каждой категории
+            var summary = new StringBuilder();
+            summary.AppendLine("Найдены следующие файлы:");
+            foreach (var category in filesByCategory)
+            {
+                summary.AppendLine($"{category.Key}: {category.Value.Count} файлов");
+            }
+
+            // Показываем уведомление с количеством файлов
+            var result = MessageBox.Show($"{summary}\n\nХотите просмотреть файлы перед переносом?",
+                                          "Результаты поиска",
+                                          MessageBoxButtons.YesNo,
+                                          MessageBoxIcon.Question);
+
+            // Если пользователь выбрал "Да", открываем FileBrowser
+            if (result == DialogResult.Yes)
+            {
+                ShowFileListInNewWindow(filesByCategory);
+            }
+            else
+            {
+                // Если пользователь отказался от просмотра, подтверждаем перенос
+                var confirmTransfer = MessageBox.Show("Вы хотите сразу начать перенос файлов?",
+                                                      "Подтверждение переноса",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Question);
+                if (confirmTransfer == DialogResult.Yes)
+                {
+                    await TransferFilesAsync(filesByCategory); // Асинхронный перенос файлов
+                    MessageBox.Show("Файлы успешно перемещены!", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
 
-        #endregion
 
-        #endregion                                 
+
+
+
+
+        #endregion
+        #endregion
 
         //Настройки
         #region == SETTINGS ==
 
         int set = 0;
-        
-
-        private void button4_Click(object sender, EventArgs e)   //Показать или убрать панель НАСТРОЙКИ
+        private void CloseTabPage(TabPage tabPage)
         {
-            if(set == 0)
+            if (tabControl1.TabPages.Contains(tabPage))
             {
+                tabControl1.TabPages.Remove(tabPage); // Удаляем вкладку
+            }
+
+            if (!tabControl1.TabPages.Contains(tabPage1)) // Возврат на основную вкладку
+            {
+                tabControl1.TabPages.Add(tabPage1);
+            }
+        }
+
+        private TabPage currentTabPage; // Хранение текущей активной вкладки
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (set == 0)
+            {
+                // Расширяем форму и показываем панель настроек
                 button4.Text = "↑Убрать панель↑";
                 set = 1;
                 this.Size = new Size(336, 480);
-                tabPage1.Visible = true;
-                Refresh();
-                if(tabset == 0)
+
+                // Если вкладка не выбрана, устанавливаем текущую
+                if (currentTabPage == null)
                 {
-                    tabControl1.TabPages.Add(tabPage1);
+                    currentTabPage = tabPage1; // Устанавливаем основную вкладку по умолчанию
                 }
-                //tabControl1.TabPages.Remove(tabPage2);
-                //tabControl1.TabPages.Remove(tabPage3);
-                //tabControl1.TabPages.Remove(tabPage4);
-                //tabControl1.TabPages.Remove(tabPage5);
-                //tabControl1.TabPages.Remove(tabPage6); 
+
+                if (!tabControl1.TabPages.Contains(currentTabPage))
+                {
+                    tabControl1.TabPages.Add(currentTabPage);
+                }
+
+                tabControl1.SelectedTab = currentTabPage; // Переключаемся на сохранённую вкладку
+
+                // Добавляем Debug Mode, если активен
+                if (dev == 1 && !tabControl1.TabPages.Contains(tabPage4))
+                {
+                    tabControl1.TabPages.Add(tabPage4);
+                }
+
+                Refresh();
             }
             else
             {
-                if(set == 1)
-                {
-                    button4.Text = "↓Показать панель↓";
-                    set = 0;
-                    this.Size = new Size(336, 195);
-                    tabPage1.Visible = false;
-                    Refresh();
-                    tabControl1.TabPages.Remove(tabPage1);
-                }
+                // Сворачиваем панель и сохраняем текущую вкладку
+                button4.Text = "↓Показать панель↓";
+                set = 0;
+                this.Size = new Size(336, 195);
+
+                currentTabPage = tabControl1.SelectedTab; // Сохраняем активную вкладку
+                tabControl1.TabPages.Clear(); // Убираем все вкладки
+                Refresh();
             }
         }
 
@@ -481,7 +666,7 @@ namespace Сортировщик
 
         private void button8_Click(object sender, EventArgs e)     //Облачные сервисы
         {
-            tabset = 1;
+
             tabControl1.TabPages.Add(tabPage6);
             tabControl1.SelectedTab = tabPage6;
             tabControl1.TabPages.Remove(tabPage1);
@@ -507,10 +692,7 @@ namespace Сортировщик
 
         private void button23_Click(object sender, EventArgs e)     //Назад из облачных сервисов
         {
-            tabset = 0;
-            tabControl1.TabPages.Remove(tabPage6);
-            tabControl1.TabPages.Add(tabPage1);
-            tabControl1.SelectedTab = tabPage1;
+            CloseTabPage(tabPage6);
         }
 
         private void button22_Click(object sender, EventArgs e)     //Кнопка Сброс
@@ -540,6 +722,18 @@ namespace Сортировщик
 
         }
 
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox5.Checked)
+            {
+                toolTip.SetToolTip(button2, "Выполняет сортировку файлов в указанной папке и её подпапках");
+            }
+            else
+            {
+                toolTip.SetToolTip(button2, "Выполняет сортировку файлов только в указанной папке");
+            }
+        }
+
         private void button25_Click(object sender, EventArgs e)     //кнапка подтверждения
         {
             switch (groupcloud)
@@ -565,15 +759,13 @@ namespace Сортировщик
         }
 
         #endregion
-
-
         #endregion
 
         #region о приложении
 
         private void button5_Click(object sender, EventArgs e)     //О приложении
         {
-            tabset = 1;
+
             tabControl1.TabPages.Add(tabPage2);
             tabControl1.SelectedTab = tabPage2;
             tabControl1.TabPages.Remove(tabPage1);
@@ -581,10 +773,7 @@ namespace Сортировщик
 
         private void button15_Click(object sender, EventArgs e)     //Назад из О приложении
         {
-            tabset = 0;
-            tabControl1.TabPages.Add(tabPage1);
-            tabControl1.SelectedTab = tabPage1;
-            tabControl1.TabPages.Remove(tabPage2);
+            CloseTabPage(tabPage2);
         }
 
         #endregion
@@ -592,17 +781,14 @@ namespace Сортировщик
         #region Другое расположение
         private void button16_Click(object sender, EventArgs e)     //Другое расположение
         {
-            tabset = 1;
+
             tabControl1.TabPages.Add(tabPage3);
             tabControl1.SelectedTab = tabPage3;
             tabControl1.TabPages.Remove(tabPage1);
         }
         private void button26_Click(object sender, EventArgs e)     //Выход из другого расположения
         {
-            tabset = 0;
-            tabControl1.TabPages.Add(tabPage1);
-            tabControl1.SelectedTab = tabPage1;
-            tabControl1.TabPages.Remove(tabPage3);
+            CloseTabPage(tabPage3);
         }
         #endregion
 
@@ -616,8 +802,6 @@ namespace Сортировщик
                 f2.ShowDialog();
             }
         }
-
-        
 
         #endregion
 
@@ -639,12 +823,17 @@ namespace Сортировщик
         private void button13_Click(object sender, EventArgs e)     //Кнопка русского языка
         {
             Lang = "1";
-            
+
 
             using (StreamWriter writer = new StreamWriter(Langt))
             {
                 writer.Write(Lang);
             }
+            button1.Enabled = true;
+            button2.Enabled = true;
+            button3.Enabled = true;
+            button4.Enabled = true;
+            button9.Enabled = true;
             button1.Text = "Выбрать папку";
             button2.Text = "Выполнить";
             button9.Text = "Выход";
@@ -664,7 +853,7 @@ namespace Сортировщик
         public void Dark()
         {
             dm = 1;
-            if(dev == 1)
+            if (dev == 1)
             {
                 BackColor = Color.OrangeRed;
             }
@@ -690,7 +879,7 @@ namespace Сортировщик
             }
             else
             {
-                if(b2 == 1)
+                if (b2 == 1)
                 {
                     button2.BackColor = Color.LightGreen;
                 }
@@ -767,7 +956,7 @@ namespace Сортировщик
             checkBox3.ForeColor = SystemColors.ControlText;
             checkBox4.ForeColor = SystemColors.ControlText;
             checkBox5.ForeColor = SystemColors.ControlText;
-                                                   
+
             label3.ForeColor = SystemColors.ControlText;
             label5.ForeColor = SystemColors.ControlText;
             label6.ForeColor = SystemColors.ControlText;
@@ -775,7 +964,7 @@ namespace Сортировщик
             label8.ForeColor = SystemColors.ControlText;
             label9.ForeColor = SystemColors.ControlText;
             label1.ForeColor = SystemColors.ControlText;
-            label2.ForeColor = SystemColors.ControlText;  
+            label2.ForeColor = SystemColors.ControlText;
 
             dmo = "-1";
             File.WriteAllText(darkp, dmo);
@@ -783,7 +972,7 @@ namespace Сортировщик
 
         private void button7_Click(object sender, EventArgs e)     //Тёмный мод
         {
-            if(dm == -1)
+            if (dm == -1)
             {
                 Dark();
                 Refresh();
@@ -799,11 +988,97 @@ namespace Сортировщик
 
         #region DEV MODE
         string[] combine_testing_dev;
+
+        private bool IsDebugModeActive()
+        {
+            return tabControl1.TabPages.Contains(tabPage4);
+        }
+
+
+        private void EnableDebugMode()
+        {
+            // Проверка на повторное включение
+            if (tabControl1.TabPages.Contains(tabPage4))
+            {
+                MessageBox.Show("Режим разработчика уже активирован!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Проверка, включён ли Debug Mode
+            if (dev == 1)
+            {
+                MessageBox.Show("Режим разработчика активирован", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Добавляем вкладку Debug Mode
+                if (!tabControl1.TabPages.Contains(tabPage4))
+                {
+                    tabControl1.TabPages.Add(tabPage4);
+                }
+
+                currentTabPage = tabPage4; // Устанавливаем Debug Mode как текущую вкладку
+                tabControl1.SelectedTab = tabPage4;
+
+                // Применяем тему для режима разработчика
+                if (dm == -1)
+                {
+                    BackColor = Color.Orange;
+                }
+                else
+                {
+                    BackColor = Color.OrangeRed;
+                }
+
+                d1 = 8; // Блокируем повторное включение через счётчик
+                Refresh();
+            }
+            else
+            {
+                // Если Debug Mode ещё не активирован, активируем его
+                if (d1 < 5)
+                {
+                    d1++;
+                }
+                else
+                {
+                    dev = 1;
+                    EnableDebugMode();
+                }
+            }
+        }
+
+        private void DisableDebugMode()
+        {
+            if (tabControl1.TabPages.Contains(tabPage4))
+            {
+                tabControl1.TabPages.Remove(tabPage4); // Убираем вкладку Debug Mode
+            }
+
+            dev = 0; // Отключаем режим разработчика
+            d1 = 5; // Сбрасываем счётчик
+
+            // Возвращаем стандартную тему
+            if (dm == -1)
+            {
+                Light();
+            }
+            else
+            {
+                Dark();
+            }
+
+            // Возвращаемся к основной вкладке
+            if (currentTabPage == tabPage4) // Если текущая вкладка была Debug Mode
+            {
+                currentTabPage = tabPage1; // Переключаемся на основную вкладку
+            }
+
+            Refresh();
+        }
+
+
         private void button11_Click(object sender, EventArgs e)     //ТЕСТИНГ
         {
-            combine_testing_dev = new[] { Langt, "\n", darkp };
-            FileBrowser f3 = new FileBrowser(combine_testing_dev);
-            f3.ShowDialog();
+
         }
 
         private void button10_Click(object sender, EventArgs e)     //Сбросить значения
@@ -826,93 +1101,24 @@ namespace Сортировщик
         int d1 = 0;
         private void label1_Click(object sender, EventArgs e)     //РЕЖИМ РАЗРАБОТЧИКА
         {
-            if(d1 <= 5)
-            {
-                if (dev == 1)
-                {
-                    MessageBox.Show("Режим разработчика активирован", "ВНИМАНИЕ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    tabControl1.TabPages.Add(tabPage4);
-                    if (dm == -1)
-                    {
-                        BackColor = Color.Orange;
-                        tabset = 1;
-                        Refresh();
-                    }
-                    if (dm == 1)
-                    {
-                        BackColor = Color.OrangeRed;
-                        Refresh();
-                    }
-                    d1 = 8;
-                    tabset = 1;
-                }
-                else
-                {
-                    if (d1 < 5)
-                    {
-                        d1++;
-                        //label1.Text = (label1.Text + " (" + Convert.ToString(d1) + ")");
-                    }
-                    else
-                    {
-                        dev = 1;
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Но вы уже разработчик!", "ВНИМАНИЕ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            EnableDebugMode();
         }
 
         private void button14_Click(object sender, EventArgs e)     //Закрыть Dev мод
         {
-            tabControl1.TabPages.Remove(tabPage4);
-            dev = 0;
-            d1 = 5;
-            if (dm == -1)
-            {
-                Light();
-                Refresh();
-            }
-            else
-            {
-                Dark();
-                Refresh();
-            }
+            DisableDebugMode();
         }
-
-
-
-
-
-
-
-
 
         #endregion
 
-        
+
         public void TTV()
         {
             toolTip.InitialDelay = 500;
             toolTip.UseFading = true;
             toolTip.UseAnimation = true;
         }
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
-        {
-            
-            if (checkBox5.Checked == true)
-            {
-                
-                toolTip.SetToolTip(button2, "Выполняет сортировку файлов в указанной папке и её подпапках");
-            }
-            else
-            {
-                
-                toolTip.SetToolTip(button2, "Выполняет сортировку файлов внутри указанной папки, не учитывая подпапок");
-            }
-        }
+
 
         private void button30_Click(object sender, EventArgs e)
         {
@@ -934,6 +1140,6 @@ namespace Сортировщик
 
         }
 
-        
+
     }
 }

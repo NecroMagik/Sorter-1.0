@@ -1,115 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 
 namespace Сортировщик
 {
     public partial class FileBrowser : Form
     {
-        public FileBrowser(string[] combine_testing_dev)
+        private readonly Dictionary<string, List<string>> filesByCategory;
+        private readonly Func<Task> transferAction; // Делегат для выполнения переноса
+        public bool TransferConfirmed { get; private set; } // Флаг, подтверждён ли перенос
+        private int dm = -1; // Текущая тема (0 - светлая, 1 - тёмная)
+        private string darkp = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\dark.txt";
+
+        public FileBrowser(Dictionary<string, List<string>> files, Func<Task> onTransferConfirmed)
         {
             InitializeComponent();
-            browse = combine_testing_dev;
-        }
-        string[] browse;
-        string cloud = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\customcloud.txt";
-        //int F;
-        //string Fs;
-        int dm = -1;     // Тёмный режим
-        string dmo;
-        string darkp = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\ZeN\Sorter\dark.txt";
-
-
-        #region == DARK MODE ==
-
-        public void Dark()
-        {
-            dm = 1;
-
-
-            this.BackColor = ColorTranslator.FromHtml("#252525");
-
-
-            button1.BackColor = Color.Khaki;
-            listView1.BackColor = ColorTranslator.FromHtml("#252525");
-            listView1.ForeColor = SystemColors.Control;
-
-
-            dmo = "1";
-            File.WriteAllText(darkp, dmo);
+            filesByCategory = files;
+            transferAction = onTransferConfirmed;
+            TransferConfirmed = false; // Изначально перенос не подтверждён
         }
 
-        public void Light()
-        {
-            dm = -1;
-            this.BackColor = SystemColors.Control;
-            button1.BackColor = Color.Khaki;
-            listView1.BackColor = SystemColors.Control;
-            listView1.ForeColor = SystemColors.ControlText;
-
-
-            dmo = "-1";
-            File.WriteAllText(darkp, dmo);
-        }
-
-        private void button7_Click(object sender, EventArgs e)     //Тёмный мод
-        {
-            if (dm == -1)
-            {
-                Dark();
-                Refresh();
-            }
-            else
-            {
-                Light();
-                Refresh();
-            }
-        }
-
-        #endregion
         private void FileBrowser_Load(object sender, EventArgs e)
         {
-            if (File.Exists(darkp))     //Проверка темы
+            // Установка темы
+            if (File.Exists(darkp))
             {
-                dmo = File.ReadAllText(darkp);
-                dm = Convert.ToInt32(dmo);
-
-                if (dm == 1)
-                {
-                    Dark();
-                    Refresh();
-                }
-                else
-                {
-                    if (dm == -1)
-                    {
-                        Light();
-                        Refresh();
-                    }
-                }
+                dm = Convert.ToInt32(File.ReadAllText(darkp));
             }
-            else
-            {
-                Light();
-                Refresh();
-            }
+            ApplyTheme();
 
-            listView1.Items.Clear();
-            foreach(string file in browse)
-            {
-                listView1.Items.Add(file);
-            }
-
-            //listView1.Text = string.Join(Environment.NewLine, browse);
+            // Заполняем список файлов
+            PopulateFileList();
         }
 
+        /// <summary>
+        /// Применяет тему (светлую/тёмную) к элементам интерфейса.
+        /// </summary>
+        private void ApplyTheme()
+        {
+            if (dm == 1) // Тёмная тема
+            {
+                this.BackColor = ColorTranslator.FromHtml("#252525");
+                listView1.BackColor = ColorTranslator.FromHtml("#252525");
+                listView1.ForeColor = Color.White;
+                button1.BackColor = Color.Khaki;
+                button2.BackColor = Color.LightBlue;
+            }
+            else // Светлая тема
+            {
+                this.BackColor = SystemColors.ControlLight;
+                listView1.BackColor = SystemColors.Window;
+                listView1.ForeColor = Color.Black;
+                button1.BackColor = Color.Khaki;
+                button2.BackColor = Color.LightBlue;
+            }
+        }
+
+        /// <summary>
+        /// Заполняет ListView списком найденных файлов.
+        /// </summary>
+        private void PopulateFileList()
+        {
+            listView1.Items.Clear();
+
+            foreach (var category in filesByCategory)
+            {
+                // Добавляем категорию как группу
+                var categoryItem = new ListViewItem($"Категория: {category.Key}");
+                categoryItem.Font = new Font(categoryItem.Font, FontStyle.Bold);
+                categoryItem.BackColor = (dm == 1) ? ColorTranslator.FromHtml("#333333") : Color.LightGray; // Цвет для категории
+                categoryItem.ForeColor = (dm == 1) ? Color.White : Color.Black; // Цвет текста категории
+                listView1.Items.Add(categoryItem);
+
+                // Добавляем файлы
+                foreach (var file in category.Value)
+                {
+                    var fileItem = new ListViewItem($"  - {Path.GetFileName(file)}");
+                    listView1.Items.Add(fileItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Кнопка "Перенести" - выполняет перенос файлов.
+        /// </summary>
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите перенести найденные файлы?",
+                                "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                TransferConfirmed = true; // Устанавливаем флаг
+                await transferAction?.Invoke(); // Выполняем передачу файлов
+                this.Close(); // Закрываем окно
+            }
+        }
+
+        /// <summary>
+        /// Кнопка "Закрыть" - закрывает окно без подтверждения переноса.
+        /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();

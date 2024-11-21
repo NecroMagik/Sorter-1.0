@@ -72,6 +72,7 @@
             this.button24 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -84,7 +85,7 @@
             this.button12 = new System.Windows.Forms.Button();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label10 = new System.Windows.Forms.Label();
+            this.button31 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -171,7 +172,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(6, 91);
+            this.button7.Location = new System.Drawing.Point(6, 175);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(133, 57);
             this.button7.TabIndex = 3;
@@ -181,7 +182,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(148, 6);
+            this.button6.Location = new System.Drawing.Point(148, 175);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(134, 57);
             this.button6.TabIndex = 2;
@@ -245,6 +246,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.button31);
             this.tabPage1.Controls.Add(this.button16);
             this.tabPage1.Controls.Add(this.button5);
             this.tabPage1.Controls.Add(this.button6);
@@ -260,9 +262,9 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(6, 175);
+            this.button16.Location = new System.Drawing.Point(6, 91);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(276, 57);
+            this.button16.Size = new System.Drawing.Size(133, 57);
             this.button16.TabIndex = 5;
             this.button16.Text = "Другое расположение";
             this.button16.UseVisualStyleBackColor = true;
@@ -579,6 +581,15 @@
             this.tabPage4.Text = "Debug mode";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 132);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 13);
+            this.label10.TabIndex = 14;
+            this.label10.Text = "label10";
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -685,14 +696,14 @@
             this.checkBox5.UseVisualStyleBackColor = true;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
-            // label10
+            // button31
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 132);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 13);
-            this.label10.TabIndex = 14;
-            this.label10.Text = "label10";
+            this.button31.Location = new System.Drawing.Point(148, 6);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(134, 57);
+            this.button31.TabIndex = 6;
+            this.button31.Text = "Параметры переноса";
+            this.button31.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -791,6 +802,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button31;
     }
 }
 
