@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="Сортировщик.exe" version="1.0.1.5" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Сортировщик" version="1.0.0.7" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Сортировщик" version="1.0.1.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Сортировщик.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Сортировщик.exe" size="58880">
-      <assemblyIdentity name="Сортировщик" version="1.0.0.7" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Сортировщик.exe" size="63488">
+      <assemblyIdentity name="Сортировщик" version="1.0.1.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>hcQMhvpzOamRzmdYGueCOs71lRNOxZ7ZkAnFVQGtyh0=</dsig:DigestValue>
+        <dsig:DigestValue>32ptA/z3k/DLPyG+sQaIEzZ5efxm2bjgjCH32zwekXs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
