@@ -3,33 +3,38 @@
     "Files": [
         {
             "Name": "Setup.exe",
-            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Setup.exe",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/setup.exe",
             "Checksum": "d3b07384d113edec49eaa6238ad5ff00e7a24cb6f751a8f3c71a3e0c4d2ef7c2"
         },
         {
             "Name": "Сортировщик.application",
-            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Сортировщик.application",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
             "Checksum": "2c6ee2a10e65b52c6a4e3a35c41818eb7845fbd663b4c4a34bcdef6b539bc22f"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.deploy",
-            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/Сортировщик_1_0_1_5/Сортировщик.exe.deploy",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.deploy",
             "Checksum": "4c3ae22ef9f06b38b2d5b0d6451a8d9f1c9bb2ea86e4a2a3c91288d3b215a631"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.config.deploy",
-            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/Сортировщик_1_0_1_5/Сортировщик.exe.config.deploy",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.config.deploy",
             "Checksum": "16c5f4e3b6ab94bc1c67ef3924fef9b2c73997cc3ab978bc334e098f4202bd16"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/SorterLOGO.ico.deploy",
-            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/Сортировщик_1_0_1_5/SorterLOGO.ico.deploy",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/SorterLOGO.ico.deploy",
             "Checksum": "6b3a55e0261b0304143f805a0c1d2d84117f5c264b06793414c72e5f5894b9c3"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.manifest",
-            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/Сортировщик_1_0_1_5/Сортировщик.exe.manifest",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.manifest",
             "Checksum": "d4e45e51498ff69b2c1189c9e2e3d4c57b4f798f63f9b2b9d12c324e0f9d3c41"
+        }
+        {
+            "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.application",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
+            "Checksum": "278AEABFDC8E327E2FB6E7F5D6FAE92FAF4F4DB9C2C199710C8E3B1EB5391DE3"
         }
     ]
 }
