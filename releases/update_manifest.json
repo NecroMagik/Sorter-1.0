@@ -1,0 +1,20 @@
+{
+    "version": "1.0.1.2",
+    "files": [
+        {
+            "path": "setup.exe",
+            "url": "https://example.com/releases/1.0.1.5/setup.exe",
+            "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+            "path": "Application Files/Sorter.application",
+            "url": "https://example.com/releases/1.0.2/Sorter.application",
+            "checksum": "a54d88e06612d820bc3be72877c74f257b561b19"
+        },
+        {
+            "path": "Application Files/Sorter.exe.deploy",
+            "url": "https://example.com/releases/1.0.2/Sorter.exe.deploy",
+            "checksum": "5d41402abc4b2a76b9719d911017c592"
+        }
+    ]
+}
