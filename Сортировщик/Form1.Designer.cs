@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -43,13 +44,25 @@
             this.button9 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.button31 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button32 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button33 = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.button30 = new System.Windows.Forms.Button();
             this.button29 = new System.Windows.Forms.Button();
             this.button28 = new System.Windows.Forms.Button();
@@ -85,7 +98,6 @@
             this.button12 = new System.Windows.Forms.Button();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button31 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -123,7 +135,7 @@
             // 
             this.button3.Location = new System.Drawing.Point(3, 153);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(282, 38);
+            this.button3.Size = new System.Drawing.Size(133, 38);
             this.button3.TabIndex = 2;
             this.button3.Text = "Проверить обновления";
             this.button3.UseVisualStyleBackColor = true;
@@ -162,6 +174,7 @@
             // 
             // button8
             // 
+            this.button8.Enabled = false;
             this.button8.Location = new System.Drawing.Point(148, 91);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(134, 57);
@@ -192,12 +205,13 @@
             // 
             // button5
             // 
+            this.button5.BackColor = System.Drawing.Color.LightBlue;
             this.button5.Location = new System.Drawing.Point(6, 6);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(133, 57);
             this.button5.TabIndex = 1;
             this.button5.Text = "О приложении";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // textBox1
@@ -224,41 +238,98 @@
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(140, 40);
             this.button9.TabIndex = 6;
-            this.button9.Text = "Закрыть";
+            this.button9.Text = "Выход";
             this.button9.UseVisualStyleBackColor = false;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // tabControl1
             // 
+            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl1.Location = new System.Drawing.Point(12, 165);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(296, 264);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 7;
             this.tabControl1.TabStop = false;
             // 
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.checkBox9);
+            this.tabPage1.Controls.Add(this.checkBox8);
+            this.tabPage1.Controls.Add(this.checkBox7);
+            this.tabPage1.Controls.Add(this.checkBox6);
             this.tabPage1.Controls.Add(this.button31);
             this.tabPage1.Controls.Add(this.button16);
             this.tabPage1.Controls.Add(this.button5);
             this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.button7);
             this.tabPage1.Controls.Add(this.button8);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(288, 238);
+            this.tabPage1.Size = new System.Drawing.Size(288, 235);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Настройки";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(152, 138);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(85, 17);
+            this.checkBox9.TabIndex = 16;
+            this.checkBox9.Text = "Документы";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(152, 115);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(66, 17);
+            this.checkBox8.TabIndex = 15;
+            this.checkBox8.Text = "Музыка";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Location = new System.Drawing.Point(152, 92);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(57, 17);
+            this.checkBox7.TabIndex = 14;
+            this.checkBox7.Text = "Видео";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(152, 69);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(54, 17);
+            this.checkBox6.TabIndex = 13;
+            this.checkBox6.Text = "Фото";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // button31
+            // 
+            this.button31.Location = new System.Drawing.Point(148, 6);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(134, 57);
+            this.button31.TabIndex = 6;
+            this.button31.Text = "Параметры переноса";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
             // 
             // button16
             // 
@@ -272,17 +343,38 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage2.Controls.Add(this.textBox2);
+            this.tabPage2.Controls.Add(this.button32);
             this.tabPage2.Controls.Add(this.button15);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.button3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(288, 238);
+            this.tabPage2.Size = new System.Drawing.Size(288, 235);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "О приложении";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(3, 3);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(282, 144);
+            this.textBox2.TabIndex = 5;
+            this.textBox2.Visible = false;
+            // 
+            // button32
+            // 
+            this.button32.Location = new System.Drawing.Point(152, 153);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(133, 38);
+            this.button32.TabIndex = 4;
+            this.button32.Text = "Показать изменения";
+            this.button32.UseVisualStyleBackColor = true;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
             // 
             // button15
             // 
@@ -324,23 +416,75 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button33);
+            this.tabPage3.Controls.Add(this.label14);
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.button30);
             this.tabPage3.Controls.Add(this.button29);
             this.tabPage3.Controls.Add(this.button28);
             this.tabPage3.Controls.Add(this.button27);
             this.tabPage3.Controls.Add(this.button26);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(288, 238);
+            this.tabPage3.Size = new System.Drawing.Size(288, 235);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Другое расположение";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button33
+            // 
+            this.button33.Location = new System.Drawing.Point(152, 197);
+            this.button33.Name = "button33";
+            this.button33.Size = new System.Drawing.Size(133, 38);
+            this.button33.TabIndex = 13;
+            this.button33.Text = "Сбросить пути";
+            this.button33.UseVisualStyleBackColor = true;
+            this.button33.Visible = false;
+            this.button33.Click += new System.EventHandler(this.button33_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(108, 158);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(10, 13);
+            this.label14.TabIndex = 12;
+            this.label14.Text = " ";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(108, 114);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(10, 13);
+            this.label13.TabIndex = 11;
+            this.label13.Text = " ";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(108, 66);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(10, 13);
+            this.label12.TabIndex = 10;
+            this.label12.Text = " ";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(108, 18);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(10, 13);
+            this.label11.TabIndex = 9;
+            this.label11.Text = " ";
             // 
             // button30
             // 
             this.button30.Location = new System.Drawing.Point(3, 145);
             this.button30.Name = "button30";
-            this.button30.Size = new System.Drawing.Size(133, 38);
+            this.button30.Size = new System.Drawing.Size(99, 38);
             this.button30.TabIndex = 8;
             this.button30.Text = "Документы";
             this.button30.UseVisualStyleBackColor = true;
@@ -350,7 +494,7 @@
             // 
             this.button29.Location = new System.Drawing.Point(3, 101);
             this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(133, 38);
+            this.button29.Size = new System.Drawing.Size(99, 38);
             this.button29.TabIndex = 7;
             this.button29.Text = "Музыка";
             this.button29.UseVisualStyleBackColor = true;
@@ -360,7 +504,7 @@
             // 
             this.button28.Location = new System.Drawing.Point(3, 53);
             this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(133, 38);
+            this.button28.Size = new System.Drawing.Size(99, 38);
             this.button28.TabIndex = 6;
             this.button28.Text = "Видео";
             this.button28.UseVisualStyleBackColor = true;
@@ -370,7 +514,7 @@
             // 
             this.button27.Location = new System.Drawing.Point(3, 5);
             this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(133, 38);
+            this.button27.Size = new System.Drawing.Size(99, 38);
             this.button27.TabIndex = 5;
             this.button27.Text = "Фото";
             this.button27.UseVisualStyleBackColor = true;
@@ -396,10 +540,10 @@
             this.tabPage6.Controls.Add(this.button18);
             this.tabPage6.Controls.Add(this.button24);
             this.tabPage6.Controls.Add(this.button17);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(288, 238);
+            this.tabPage6.Size = new System.Drawing.Size(288, 235);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Облачные сервисы";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -574,9 +718,9 @@
             this.tabPage4.Controls.Add(this.button14);
             this.tabPage4.Controls.Add(this.button11);
             this.tabPage4.Controls.Add(this.button10);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(288, 238);
+            this.tabPage4.Size = new System.Drawing.Size(288, 235);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Debug mode";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -658,9 +802,9 @@
             // 
             this.tabPage5.Controls.Add(this.button13);
             this.tabPage5.Controls.Add(this.button12);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(288, 238);
+            this.tabPage5.Size = new System.Drawing.Size(288, 235);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Язык \\ Language";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -696,15 +840,6 @@
             this.checkBox5.UseVisualStyleBackColor = true;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
-            // button31
-            // 
-            this.button31.Location = new System.Drawing.Point(148, 6);
-            this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(134, 57);
-            this.button31.TabIndex = 6;
-            this.button31.Text = "Параметры переноса";
-            this.button31.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -720,6 +855,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
@@ -728,9 +864,11 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -803,6 +941,17 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.Button button32;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button button33;
     }
 }
 
