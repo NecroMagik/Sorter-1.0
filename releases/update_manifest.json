@@ -1,10 +1,10 @@
 {
-    "Version": "1.0.1.7",
+    "Version": "1.0.1.75",
     "Files": [
         {
             "Name": "Setup.exe",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/setup.exe",
-            "Checksum": "82234d0780134472a772ca800063d41e5b55ad0195c83dfa4274be3a01e63401"
+            "Checksum": "82234d0780134472a772ca800063d41e5b55ad0195c83dfa4274be3a01e63400"
         },
         {
             "Name": "Сортировщик.application",
