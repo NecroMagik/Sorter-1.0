@@ -108,7 +108,7 @@ public class Updater
         {
             MessageBox.Show($"Ошибка при удалении старой версии: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        Form1 form1 = new Form1();
+        Sorter_Main form1 = new Sorter_Main();
         form1.Visible = false;
         Environment.Exit(0);
     }
