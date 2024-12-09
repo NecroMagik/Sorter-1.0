@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
+using System.Linq;
+using Сортировщик;
 
 public class FileManager
 {
@@ -14,13 +16,27 @@ public class FileManager
         { "Документы", new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".txt", ".ppt", ".pptx" } }
     };
 
-    public string SelectedFolder { get; private set; } // Выбранная папка
-    public bool SearchSubfolders { get; private set; } // Флаг для поиска в подпапках
-    public Dictionary<string, List<string>> FoundFiles { get; private set; } // Найденные файлы по категориям
+    public string SelectedFolder { get; private set; }
+    public bool SearchSubfolders { get; set; }
+    public Dictionary<string, List<string>> FoundFiles { get; private set; }
+    public Dictionary<string, string> DefaultPaths { get; private set; } // Пути по умолчанию
 
     public FileManager()
     {
         FoundFiles = new Dictionary<string, List<string>>();
+        InitializeDefaultPaths();
+    }
+
+    public void InitializeDefaultPaths()
+    {
+        string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        DefaultPaths = new Dictionary<string, string>
+        {
+            { "Фото", Path.Combine(userPath, "Pictures") },
+            { "Видео", Path.Combine(userPath, "Videos") },
+            { "Музыка", Path.Combine(userPath, "Music") },
+            { "Документы", Path.Combine(userPath, "Documents") }
+        };
     }
 
     public void SelectFolder(Label label)
@@ -39,7 +55,7 @@ public class FileManager
         }
     }
 
-    public void SearchFiles(bool searchSubfolders, List<string> activeCategories, Label label)
+    public void SearchFiles(bool searchSubfolders, List<string> activeCategories, ProgressBar progressBar, Label label)
     {
         if (string.IsNullOrEmpty(SelectedFolder))
         {
@@ -52,73 +68,50 @@ public class FileManager
 
         try
         {
+            progressBar.Value = 0;
+            progressBar.Maximum = activeCategories.Count;
+
             foreach (var category in activeCategories)
             {
                 if (fileCategories.ContainsKey(category))
                 {
                     string[] extensions = fileCategories[category];
                     var files = Directory.EnumerateFiles(
-                            SelectedFolder,
-                            "*.*",
-                            SearchSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
-                        .Where(file => extensions.Contains(Path.GetExtension(file).ToLower()))
-                        .ToList();
-
+                        SelectedFolder,
+                        "*.*",
+                        SearchSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
+                    )
+                    .Where(file => extensions.Contains(Path.GetExtension(file).ToLower()))
+                    .ToList();
                     FoundFiles[category] = files;
+
+                    progressBar.Value += 1;
                 }
             }
 
-            // Проверка, есть ли найденные файлы
             if (FoundFiles.Values.All(list => list.Count == 0))
             {
-                // Если поиск не дал результатов
-                if (!SearchSubfolders)
+                DialogResult result = MessageBox.Show(
+                    "Файлы не найдены. Выполнить поиск в подпапках?",
+                    "Файлы не найдены",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
                 {
-                    // Предложить выполнить поиск в подпапках
-                    DialogResult result = MessageBox.Show(
-                        "Файлы не найдены. Выполнить поиск в подпапках?",
-                        "Файлы не найдены",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        // Активировать поиск в подпапках
-                        SearchSubfolders = true;
-
-                        // Найти чекбокс динамически
-                        var form = Application.OpenForms.Cast<Form>().FirstOrDefault();
-                        var checkBox = form?.Controls.OfType<CheckBox>().FirstOrDefault(cb => cb.Name == "checkBox1");
-                        if (checkBox != null)
-                        {
-                            checkBox.Checked = true; // Активировать чекбокс
-                        }
-
-                        // Запустить поиск снова
-                        SearchFiles(true, activeCategories, label);
-                        return;
-                    }
-                    else
-                    {
-                        label.Text = "Файлы не найдены.";
-                        return;
-                    }
+                    SearchFiles(true, activeCategories, progressBar, label);
                 }
                 else
                 {
-                    // Если поиск в подпапках уже активен и файлы не найдены
-                    MessageBox.Show("Файлы не найдены даже в подпапках. Попробуйте выбрать другую папку.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     label.Text = "Файлы не найдены.";
-                    return;
                 }
-            }
 
-            // Если файлы найдены
-            label.Text = "Файлы успешно найдены.";
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            MessageBox.Show($"Ошибка доступа к файлу/папке: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+}
+            else
+            {
+                label.Text = $"Найдено файлов: {FoundFiles.Values.Sum(list => list.Count)}";
+            }
         }
         catch (Exception ex)
         {
@@ -126,8 +119,12 @@ public class FileManager
         }
     }
 
+    public void ResetDefaultPaths()
+    {
+        InitializeDefaultPaths();
+    }
 
-    public void MoveFiles(string targetFolder, List<string> activeCategories, Label label)
+    public async Task MoveFiles(Dictionary<string, string> categoryPaths, ProgressBar progressBar, Label label)
     {
         if (FoundFiles.Count == 0 || FoundFiles.Values.All(list => list.Count == 0))
         {
@@ -135,28 +132,33 @@ public class FileManager
             return;
         }
 
+        progressBar.Value = 0;
+        progressBar.Maximum = FoundFiles.Values.Sum(files => files.Count);
+
         try
         {
-            foreach (var category in activeCategories)
+            foreach (var category in FoundFiles)
             {
-                if (FoundFiles.ContainsKey(category))
+                if (!categoryPaths.TryGetValue(category.Key, out string targetFolder))
                 {
-                    string categoryFolder = Path.Combine(targetFolder, category);
-                    Directory.CreateDirectory(categoryFolder);
+                    targetFolder = DefaultPaths[category.Key];
+                }
 
-                    foreach (var file in FoundFiles[category])
+                Directory.CreateDirectory(targetFolder);
+
+                foreach (var file in category.Value)
+                {
+                    string destinationPath = Path.Combine(targetFolder, Path.GetFileName(file));
+                    if (File.Exists(destinationPath))
                     {
-                        string destinationPath = Path.Combine(categoryFolder, Path.GetFileName(file));
-
-                        if (File.Exists(destinationPath))
-                        {
-                            destinationPath = Path.Combine(
-                                categoryFolder,
-                                $"{Path.GetFileNameWithoutExtension(file)}_копия{Path.GetExtension(file)}");
-                        }
-
-                        File.Move(file, destinationPath);
+                        destinationPath = Path.Combine(
+                            targetFolder,
+                            $"{Path.GetFileNameWithoutExtension(file)}_копия{Path.GetExtension(file)}"
+                        );
                     }
+
+                    File.Move(file, destinationPath);
+                    progressBar.Value += 1;
                 }
             }
 
@@ -165,7 +167,7 @@ public class FileManager
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Ошибка при переносе файлов: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"Ошибка при перемещении файлов: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
