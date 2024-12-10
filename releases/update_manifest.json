@@ -9,7 +9,12 @@
         {
             "Name": "Сортировщик.application",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
-            "Checksum": "c0013adaf766b9112fa3b71afd425d3b6e97fbeb55d6e6c8e7fa5b10032b1cd3"
+            "Checksum": "9b5dd05c95821ec5369e801579992c18d76de36ec5e54364fc0c4fb1ec7dcbdd"
+        },
+        {
+            "Name": "Application Files/Сортировщик_1_0_1_5/Guna.UI2.dll.deploy",
+            "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/Guna.UI2.dll.deploy",
+            "Checksum": "e658e8a5616245dbe655e194b59f1bb704aaeafbd0925d6eebbe70555a638cdd"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Newtonsoft.json.dll.deploy",
@@ -24,22 +29,22 @@
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.application",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
-            "Checksum": "c0013adaf766b9112fa3b71afd425d3b6e97fbeb55d6e6c8e7fa5b10032b1cd3"
+            "Checksum": "9b5dd05c95821ec5369e801579992c18d76de36ec5e54364fc0c4fb1ec7dcbdd"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.config.deploy",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.config.deploy",
-            "Checksum": "16286566d54d81c3721f7ecf7f426d965de364e9be2f9e628d7363b684b6fe6a"
+            "Checksum": "a48338d14cb572d4ef537ecf8e08be6c4eb41255712e95f60971f1d0b031519a"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.deploy",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.deploy",
-            "Checksum": "e689ca7e9c773074d1a60f6b26422b88afa8303805e133009e5cbd59d75441c5"
+            "Checksum": "3545b2a9b0ffc499181bf7afda0288b00e4fbcc0be780424976357a7ddfb24e9"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.manifest",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.manifest",
-            "Checksum": "01be016c38594e9086f12eacb2f538ac366a7f27a3d3786eb0ba21a7ba3d2dde"
+            "Checksum": "06be5d81938b45ec9e30efbbe28c4e14e829d90d9d593978171cf8cc6cc76629"
         }
     ]
 }
