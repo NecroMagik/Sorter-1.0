@@ -10,7 +10,6 @@ namespace Сортировщик
     {
         private FileManager fileManager;
         private Buttons buttons;
-        private Updater updater;
         public Sorter_Main()
         {
             InitializeComponent();
@@ -20,7 +19,7 @@ namespace Сортировщик
         private void InitializeClasses()
         {
             // Создаем экземпляр FileManager
-            fileManager = new FileManager(button1, label2, label3, label4, label5, checkBox1);
+            fileManager = new FileManager(button1, label2, label3, label4, label5, checkBox1, guna2ProgressBar1);
             // Связываем FileManager с Buttons
             buttons = new Buttons(
                 fileManager,
@@ -47,20 +46,20 @@ namespace Сортировщик
             button12.Click += (s, e) => buttons.HandleSelectCategoryPath("Документы", label5);
 
         }
-        
+        string Stat;
+        string LasTUPe;
+        string ver;
         public void INFORMATION()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var status = "Пересборка";
-            var LastUp = "09.12.2024";
+            var status = "Бета-4";
+            var LastUp = "10.12.2024";
             this.Text = $"Сортировщик файлов   {version}";
             ver = version.ToString();
             LasTUPe = LastUp;
             Stat = status;
         }
-        string Stat;
-        string LasTUPe;
-        string ver;
+        
 
         private void Sorter_Main_Load(object sender, EventArgs e)       //Загрузка приложения
         {

@@ -4,27 +4,29 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
+using Сортировщик;
 
 public class Buttons
 {
     private FileManager fileManager;
     private Label statusLabel;
-    private Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1;
+    private Guna2ProgressBar guna2ProgressBar1;
     private CheckBox searchSubfoldersCheckBox;
     private CheckBox[] categoryCheckBoxes;
     private Button button3;
     private Button button5;
-    private Updater updater;
 
-    public Buttons(FileManager fileManager, Label statusLabel, Guna.UI2.WinForms.Guna2ProgressBar progressBar, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, params CheckBox[] categoryCheckBoxes)
+    public Buttons(FileManager fileManager, Label statusLabel, Guna2ProgressBar guna2ProgressBar1, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, params CheckBox[] categoryCheckBoxes)
     {
-        updater = new Updater(guna2ProgressBar1);
-        this.fileManager = fileManager;
+       this.fileManager = fileManager;
         this.statusLabel = statusLabel;
         this.searchSubfoldersCheckBox = searchSubfoldersCheckBox;
         this.categoryCheckBoxes = categoryCheckBoxes;
         this.button3 = button3;
         this.button5 = button5;
+        this.guna2ProgressBar1 = guna2ProgressBar1;
+        guna2ProgressBar1.Value = 0;
     }
 
     public void HandleAboutButtonClick(string version, string status, string lastUpdate)
@@ -40,7 +42,7 @@ public class Buttons
     }
 
     // Метод для кнопки 8 (Проверка обновлений)
-    public async void HandleUpdateButtonClick(Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1)
+    public async void HandleUpdateButtonClick(Guna2ProgressBar guna2ProgressBar1)
     {
         var updater = new Updater(guna2ProgressBar1);
 

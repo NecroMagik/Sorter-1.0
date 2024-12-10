@@ -100,6 +100,7 @@ public class Updater
     private void LaunchInstallerAndExit(string setupFilePath)
     {
         Process.Start(setupFilePath);
+        Sorter_Main sorter = new Sorter_Main();
 
         // Удаление ClickOnce-приложения
         try
@@ -107,15 +108,15 @@ public class Updater
             string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Apps", "2.0");
             if (Directory.Exists(appDataPath))
             {
+                sorter.Visible = false;
                 Directory.Delete(appDataPath, true);
             }
         }
-        catch (Exception ex)
+        catch 
         {
-            MessageBox.Show($"Ошибка при удалении старой версии: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
         }
-        Sorter_Main form1 = new Sorter_Main();
-        form1.Visible = false;
+        
         Environment.Exit(0);
     }
 

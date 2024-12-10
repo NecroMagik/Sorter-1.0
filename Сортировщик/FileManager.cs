@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Drawing;
 using Сортировщик;
+using Guna.UI2.WinForms;
 
 public class FileManager
 {
@@ -29,8 +30,12 @@ public class FileManager
     private Label label5;
     private CheckBox checkBox1;
 
-    public FileManager(Button button1, Label label2, Label label3, Label label4, Label label5, CheckBox checkBox1)
+    public FileManager(Button button1, Label label2, Label label3, Label label4, Label label5, CheckBox checkBox1, Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1)
     {
+        if(guna2ProgressBar1 == null)
+        {
+            throw new ArgumentNullException(nameof(guna2ProgressBar1));
+        }
         FoundFiles = new Dictionary<string, List<string>>();
         this.button1 = button1;
         this.label2 = label2;
@@ -73,7 +78,7 @@ public class FileManager
         }
     }
 
-    public async void SearchFiles(bool searchSubfolders, List<string> activeCategories, Guna.UI2.WinForms.Guna2ProgressBar progressBar, Label label)
+    public async void SearchFiles(bool searchSubfolders, List<string> activeCategories, Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1, Label label)
     {
         if (string.IsNullOrEmpty(SelectedFolder))
         {
@@ -87,8 +92,8 @@ public class FileManager
 
         try
         {
-            progressBar.Value = 0;
-            progressBar.Maximum = activeCategories.Count;
+            guna2ProgressBar1.Value = 0;
+            guna2ProgressBar1.Maximum = activeCategories.Count;
 
             foreach (var category in activeCategories)
             {
@@ -104,7 +109,7 @@ public class FileManager
                     .ToList();
                     FoundFiles[category] = files;
 
-                    progressBar.Value += 1;
+                    guna2ProgressBar1.Value += 1;
                 }
             }
 
@@ -122,7 +127,7 @@ public class FileManager
                     if (result == DialogResult.Yes)
                     {
                         checkBox1.Checked = true; // Активируем чекбокс
-                        SearchFiles(true, activeCategories, progressBar, label);
+                        SearchFiles(true, activeCategories, guna2ProgressBar1, label);
                     }
                     else
                     {
@@ -149,7 +154,7 @@ public class FileManager
                 DialogResult SortResult = MessageBox.Show(resultText + "\n\n Подтвердите сортировку файлов", "Результаты поска",MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if(SortResult == DialogResult.Yes)
                 {
-                    await MoveFiles(DefaultPaths, progressBar, label);
+                    await MoveFiles(DefaultPaths, guna2ProgressBar1, label);
                     label.Text = $"Найдено файлов: {FoundFiles.Values.Sum(list => list.Count)}, Выполняется сортировка";
                 }
 
@@ -205,15 +210,34 @@ public class FileManager
                     string destinationPath = Path.Combine(targetFolder, Path.GetFileName(file));
                     if (File.Exists(destinationPath))
                     {
-                        destinationPath = Path.Combine(
-                            targetFolder,
-                            $"{Path.GetFileNameWithoutExtension(file)}_копия{Path.GetExtension(file)}"
+                        DialogResult result = MessageBox.Show(
+                            $"Файл {Path.GetFileName(file)} уже существует в папке {targetFolder}.\n" +
+                            "Вы хотите заменить его?\n" +
+                            "Да -- Заменить файл\n" +
+                            "Нет -- Продолжить с пропуском этого файла\n" +
+                            "Отмена -- Сортировка будет прервана",
+                            "Конфликт файлов",
+                            MessageBoxButtons.YesNoCancel,
+                            MessageBoxIcon.Question
                         );
+
+                        if (result == DialogResult.Cancel)
+                        {
+                            label.Text = "Перемещение файлов отменено.";
+                            return;
+                        }
+                        else if (result == DialogResult.No)
+                        {
+                            progressBar.Value += 1;
+                            continue; // Пропустить файл
+                        }
                     }
 
+                    // Перемещаем файл
                     File.Move(file, destinationPath);
                     progressBar.Value += 1;
 
+                    // Эмуляция задержки для наглядности прогресса
                     await Task.Delay(100);
                 }
             }
