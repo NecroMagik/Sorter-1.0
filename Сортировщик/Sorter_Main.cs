@@ -3,8 +3,6 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using System.IO;
-using Guna.UI2.WinForms;
-using Сортировщик;
 
 namespace Сортировщик
 {
@@ -12,6 +10,7 @@ namespace Сортировщик
     {
         private FileManager fileManager;
         private Buttons buttons;
+        private Updater updater;
         public Sorter_Main()
         {
             InitializeComponent();
@@ -22,7 +21,6 @@ namespace Сортировщик
         {
             // Создаем экземпляр FileManager
             fileManager = new FileManager(button1, label2, label3, label4, label5, checkBox1);
-
             // Связываем FileManager с Buttons
             buttons = new Buttons(
                 fileManager,
@@ -38,30 +36,18 @@ namespace Сортировщик
             button1.Click += (s, e) => buttons.HandleSelectFolderButtonClick();
             button2.Click += (s, e) => buttons.HandleSearchFilesButtonClick();
             button3.Click += (s, e) => buttons.HandleResizeButtonClick(this, groupBox1, groupBox2);
+            button4.Click += (s, e) => buttons.HandleAboutButtonClick(ver, Stat, LasTUPe);
             button5.Click += (s, e) => buttons.HandleResetPathsButtonClick();
             button6.Click += (s, e) => buttons.HandleLanguageButtonClick();
-        }
-        // Дополнительная обработка для кнопок 9-12
-        private void button9_Click(object sender, EventArgs e)
-        {
-            buttons.HandleSelectCategoryPath("Фото", label2);
-        }
+            button8.Click += (s, e) => buttons.HandleUpdateButtonClick(guna2ProgressBar1);
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            buttons.HandleSelectCategoryPath("Видео", label3);
-        }
+            button9.Click += (s, e) =>  buttons.HandleSelectCategoryPath("Фото", label2);
+            button10.Click += (s, e) => buttons.HandleSelectCategoryPath("Видео", label3);
+            button11.Click += (s, e) => buttons.HandleSelectCategoryPath("Музыка", label4);
+            button12.Click += (s, e) => buttons.HandleSelectCategoryPath("Документы", label5);
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            buttons.HandleSelectCategoryPath("Музыка", label4);
         }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            buttons.HandleSelectCategoryPath("Документы", label5);
-        }
-
+        
         public void INFORMATION()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -82,88 +68,27 @@ namespace Сортировщик
             this.Size = new System.Drawing.Size(395, 272);
         }
 
-        
-
-        private void button4_Click(object sender, EventArgs e)          //О приложении
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            MessageBox.Show($"Версия приложения: {ver}\n" +
-                $"Статус: {Stat}\n" +
-                $"Последние изменения: {LasTUPe}"
+            // Проверяем причину закрытия (чтобы не блокировать завершение процесса, например, при выключении ПК)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                // Показываем сообщение пользователю
+                DialogResult result = MessageBox.Show(
+                    "Вы уверены, что хотите закрыть приложение?",
+                    "Подтверждение закрытия",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
 
-                , "О приложении", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Если пользователь выбрал "Нет", отменяем закрытие
+                if (result == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+
+            base.OnFormClosing(e);
         }
-
-        private async void button8_Click(object sender, EventArgs e)    //Кнопка обновления приложения
-        {
-            var updater = new Updater();
-
-            try
-            {
-                // Текущая версия приложения
-                string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-                // Папка для временных файлов
-                string tempFolder = Path.Combine(Path.GetTempPath(), "Sorter");
-                if (!Directory.Exists(tempFolder))
-                {
-                    Directory.CreateDirectory(tempFolder);
-                }
-
-                // Показываем прогрессбар
-                guna2ProgressBar1.Style = ProgressBarStyle.Marquee;
-
-                // Скачиваем манифест
-                string manifestPath = await updater.DownloadManifestAsync(tempFolder);
-
-                // Читаем манифест
-                Updater.UpdateManifest manifest = updater.ReadManifest(manifestPath);
-                string latestVersion = manifest.Version;
-
-                if (string.IsNullOrEmpty(latestVersion))
-                {
-                    MessageBox.Show("Ошибка при получении версии. Попробуйте позже.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Сравнение версий
-                if (string.Compare(currentVersion, latestVersion) < 0)
-                {
-                    // Получение списка изменений
-                    string changelog = await updater.GetChangelogAsync();
-                    changelog = changelog ?? "Нет доступного списка изменений.";
-
-                    // Предложение обновления
-                    DialogResult result = MessageBox.Show(
-                        $"Доступна новая версия {latestVersion}.\n\nСписок изменений:\n{changelog}\n\nОбновить сейчас?",
-                        "Обновление доступно",
-                        MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        guna2ProgressBar1.Style = ProgressBarStyle.Continuous;
-                        guna2ProgressBar1.Value = 0;
-
-                        // Запускаем процесс обновления
-                        await updater.DownloadAndInstallUpdateAsync(progressBar1);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("У вас установлена последняя версия приложения.", "Обновлений нет", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при проверке обновлений: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                guna2ProgressBar1.Style = ProgressBarStyle.Continuous;
-                guna2ProgressBar1.Value = 0;
-            }
-        }
-
-       
     }
 }

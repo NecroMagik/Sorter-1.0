@@ -8,11 +8,18 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Сортировщик;
+using Guna.UI2.WinForms;
 
 public class Updater
 {
     private readonly string manifestUrl = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
     private readonly string changelogUrl = "https://raw.githubusercontent.com/NecroMagik/Sorter-1.0/refs/heads/Release/releases/ChangeLog.txt";
+    private Guna2ProgressBar progressBar;
+
+    public Updater(Guna2ProgressBar progressBar)
+    {
+        this.progressBar = progressBar;
+    }
 
     // Загрузка манифеста
     public async Task<string> DownloadManifestAsync(string tempFolder)
@@ -52,7 +59,7 @@ public class Updater
     }
 
     // Загрузка и установка обновления
-    public async Task DownloadAndInstallUpdateAsync(ProgressBar progressBar)
+    public async Task DownloadAndInstallUpdateAsync()
     {
         using (HttpClient client = new HttpClient())
         {

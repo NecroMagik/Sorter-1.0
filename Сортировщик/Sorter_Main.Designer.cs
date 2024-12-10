@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Sorter_Main));
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -130,7 +131,6 @@
             this.button4.TabIndex = 7;
             this.button4.Text = "О приложении";
             this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button6
             // 
@@ -153,7 +153,6 @@
             this.button8.TabIndex = 11;
             this.button8.Text = "Проверить обновления";
             this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // groupBox1
             // 
@@ -294,7 +293,6 @@
             this.button12.TabIndex = 15;
             this.button12.Text = "Документы";
             this.button12.UseVisualStyleBackColor = false;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button11
             // 
@@ -305,7 +303,6 @@
             this.button11.TabIndex = 16;
             this.button11.Text = "Музыка";
             this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button10
             // 
@@ -316,7 +313,6 @@
             this.button10.TabIndex = 15;
             this.button10.Text = "Видео";
             this.button10.UseVisualStyleBackColor = false;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button9
             // 
@@ -327,7 +323,6 @@
             this.button9.TabIndex = 14;
             this.button9.Text = "Фото";
             this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button5
             // 
@@ -372,6 +367,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button5);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Sorter_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

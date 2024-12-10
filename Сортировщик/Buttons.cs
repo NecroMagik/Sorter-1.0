@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -6,21 +9,87 @@ public class Buttons
 {
     private FileManager fileManager;
     private Label statusLabel;
-    private Guna.UI2.WinForms.Guna2ProgressBar progressBar;
+    private Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1;
     private CheckBox searchSubfoldersCheckBox;
     private CheckBox[] categoryCheckBoxes;
     private Button button3;
     private Button button5;
+    private Updater updater;
 
     public Buttons(FileManager fileManager, Label statusLabel, Guna.UI2.WinForms.Guna2ProgressBar progressBar, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, params CheckBox[] categoryCheckBoxes)
     {
+        updater = new Updater(guna2ProgressBar1);
         this.fileManager = fileManager;
         this.statusLabel = statusLabel;
-        this.progressBar = progressBar;
         this.searchSubfoldersCheckBox = searchSubfoldersCheckBox;
         this.categoryCheckBoxes = categoryCheckBoxes;
         this.button3 = button3;
         this.button5 = button5;
+    }
+
+    public void HandleAboutButtonClick(string version, string status, string lastUpdate)
+    {
+        MessageBox.Show(
+            $"Версия: {version}\n" +
+            $"Статус: {status}\n" +
+            $"Последнее обновление: {lastUpdate}",
+            "О приложении",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information
+        );
+    }
+
+    // Метод для кнопки 8 (Проверка обновлений)
+    public async void HandleUpdateButtonClick(Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1)
+    {
+        var updater = new Updater(guna2ProgressBar1);
+
+        try
+        {
+            // Текущая версия приложения
+            string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            // Проверка обновлений
+            string tempFolder = Path.Combine(Path.GetTempPath(), "Sorter");
+            if (!Directory.Exists(tempFolder))
+            {
+                Directory.CreateDirectory(tempFolder);
+            }
+
+            guna2ProgressBar1.Value = 0; // Сбрасываем прогресс
+
+            string manifestPath = await updater.DownloadManifestAsync(tempFolder);
+            Updater.UpdateManifest manifest = updater.ReadManifest(manifestPath);
+
+            if (string.Compare(currentVersion, manifest.Version) < 0)
+            {
+                string changelog = await updater.GetChangelogAsync();
+                DialogResult result = MessageBox.Show(
+                    $"Доступна новая версия: {manifest.Version}\n\nСписок изменений:\n{changelog}\n\nУстановить обновление?",
+                    "Обновление доступно",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information
+                );
+
+                if (result == DialogResult.Yes)
+                {
+                    guna2ProgressBar1.Value = 0; // Сбрасываем прогресс
+                    await updater.DownloadAndInstallUpdateAsync();
+                }
+            }
+            else
+            {
+                MessageBox.Show("У вас установлена последняя версия приложения.", "Обновлений нет", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при проверке обновлений: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            guna2ProgressBar1.Value = 0; // Сбрасываем прогресс
+        }
     }
 
     public void HandleSelectFolderButtonClick()
@@ -31,12 +100,12 @@ public class Buttons
     public void HandleSearchFilesButtonClick()
     {
         List<string> activeCategories = GetActiveCategories();
-        fileManager.SearchFiles(searchSubfoldersCheckBox.Checked, activeCategories, progressBar, statusLabel);
+        fileManager.SearchFiles(searchSubfoldersCheckBox.Checked, activeCategories, guna2ProgressBar1, statusLabel);
     }
 
     public async void HandleMoveFilesButtonClick(Dictionary<string, string> categoryPaths)
     {
-        await fileManager.MoveFiles(categoryPaths, progressBar, statusLabel);
+        await fileManager.MoveFiles(categoryPaths, guna2ProgressBar1, statusLabel);
     }
 
     public void HandleResizeButtonClick(Form form, GroupBox groupBox1, GroupBox groupBox2)
