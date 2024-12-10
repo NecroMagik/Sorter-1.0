@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using System.IO;
+using Guna.UI2.WinForms;
 using Сортировщик;
 
 namespace Сортировщик
@@ -26,7 +27,7 @@ namespace Сортировщик
             buttons = new Buttons(
                 fileManager,
                 label1,            // Label для отображения статуса
-                progressBar1,           // Прогресс-бар
+                guna2ProgressBar1,           // Прогресс-бар
                 checkBox1, // Чекбокс поиска в подпапках
                 button3,                // Кнопка 3 (для изменения размеров окна)
                 button5,
@@ -109,9 +110,7 @@ namespace Сортировщик
                 }
 
                 // Показываем прогрессбар
-                progressBar1.Visible = true;
-                progressBar1.MarqueeAnimationSpeed = 30;
-                progressBar1.Style = ProgressBarStyle.Marquee;
+                guna2ProgressBar1.Style = ProgressBarStyle.Marquee;
 
                 // Скачиваем манифест
                 string manifestPath = await updater.DownloadManifestAsync(tempFolder);
@@ -142,8 +141,8 @@ namespace Сортировщик
 
                     if (result == DialogResult.Yes)
                     {
-                        progressBar1.Style = ProgressBarStyle.Continuous;
-                        progressBar1.Value = 0;
+                        guna2ProgressBar1.Style = ProgressBarStyle.Continuous;
+                        guna2ProgressBar1.Value = 0;
 
                         // Запускаем процесс обновления
                         await updater.DownloadAndInstallUpdateAsync(progressBar1);
@@ -160,9 +159,11 @@ namespace Сортировщик
             }
             finally
             {
-                progressBar1.Style = ProgressBarStyle.Continuous;
-                progressBar1.Value = 0;
+                guna2ProgressBar1.Style = ProgressBarStyle.Continuous;
+                guna2ProgressBar1.Value = 0;
             }
         }
+
+       
     }
 }

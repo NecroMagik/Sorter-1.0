@@ -6,13 +6,13 @@ public class Buttons
 {
     private FileManager fileManager;
     private Label statusLabel;
-    private ProgressBar progressBar;
+    private Guna.UI2.WinForms.Guna2ProgressBar progressBar;
     private CheckBox searchSubfoldersCheckBox;
     private CheckBox[] categoryCheckBoxes;
     private Button button3;
     private Button button5;
 
-    public Buttons(FileManager fileManager, Label statusLabel, ProgressBar progressBar, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, params CheckBox[] categoryCheckBoxes)
+    public Buttons(FileManager fileManager, Label statusLabel, Guna.UI2.WinForms.Guna2ProgressBar progressBar, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, params CheckBox[] categoryCheckBoxes)
     {
         this.fileManager = fileManager;
         this.statusLabel = statusLabel;

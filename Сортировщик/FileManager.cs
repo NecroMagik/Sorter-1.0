@@ -73,7 +73,7 @@ public class FileManager
         }
     }
 
-    public async void SearchFiles(bool searchSubfolders, List<string> activeCategories, ProgressBar progressBar, Label label)
+    public async void SearchFiles(bool searchSubfolders, List<string> activeCategories, Guna.UI2.WinForms.Guna2ProgressBar progressBar, Label label)
     {
         if (string.IsNullOrEmpty(SelectedFolder))
         {
@@ -178,7 +178,7 @@ public class FileManager
         InitializeDefaultPaths();
     }
 
-    public async Task MoveFiles(Dictionary<string, string> categoryPaths, ProgressBar progressBar, Label label)
+    public async Task MoveFiles(Dictionary<string, string> categoryPaths, Guna.UI2.WinForms.Guna2ProgressBar progressBar, Label label)
     {
         if (FoundFiles.Count == 0 || FoundFiles.Values.All(list => list.Count == 0))
         {
