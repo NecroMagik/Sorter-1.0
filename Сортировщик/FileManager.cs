@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System;
 using System.Linq;
+using System.Drawing;
 using Сортировщик;
 
 public class FileManager
@@ -21,9 +22,22 @@ public class FileManager
     public Dictionary<string, List<string>> FoundFiles { get; private set; }
     public Dictionary<string, string> DefaultPaths { get; private set; } // Пути по умолчанию
 
-    public FileManager()
+    private Button button1;
+    private Label label2;
+    private Label label3;
+    private Label label4;
+    private Label label5;
+    private CheckBox checkBox1;
+
+    public FileManager(Button button1, Label label2, Label label3, Label label4, Label label5, CheckBox checkBox1)
     {
         FoundFiles = new Dictionary<string, List<string>>();
+        this.button1 = button1;
+        this.label2 = label2;
+        this.label3 = label3;
+        this.label4 = label4;
+        this.label5 = label5;
+        this.checkBox1 = checkBox1;
         InitializeDefaultPaths();
     }
 
@@ -37,6 +51,10 @@ public class FileManager
             { "Музыка", Path.Combine(userPath, "Music") },
             { "Документы", Path.Combine(userPath, "Documents") }
         };
+        label2.Text = $"Def: {DefaultPaths["Фото"]}";
+        label3.Text = $"Def: {DefaultPaths["Видео"]}";
+        label4.Text = $"Def: {DefaultPaths["Музыка"]}";
+        label5.Text = $"Def: {DefaultPaths["Документы"]}";
     }
 
     public void SelectFolder(Label label)
@@ -55,11 +73,12 @@ public class FileManager
         }
     }
 
-    public void SearchFiles(bool searchSubfolders, List<string> activeCategories, ProgressBar progressBar, Label label)
+    public async void SearchFiles(bool searchSubfolders, List<string> activeCategories, ProgressBar progressBar, Label label)
     {
         if (string.IsNullOrEmpty(SelectedFolder))
         {
             MessageBox.Show("Сначала выберите папку для поиска.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            BlinkButton(button1);
             return;
         }
 
@@ -91,32 +110,67 @@ public class FileManager
 
             if (FoundFiles.Values.All(list => list.Count == 0))
             {
-                DialogResult result = MessageBox.Show(
-                    "Файлы не найдены. Выполнить поиск в подпапках?",
-                    "Файлы не найдены",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
+                if (!searchSubfolders)
                 {
-                    SearchFiles(true, activeCategories, progressBar, label);
+                    // Первый запуск: предложить поиск в подпапках
+                    DialogResult result = MessageBox.Show(
+                        "Файлы не найдены. Выполнить поиск в подпапках?",
+                        "Файлы не найдены",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        checkBox1.Checked = true; // Активируем чекбокс
+                        SearchFiles(true, activeCategories, progressBar, label);
+                    }
+                    else
+                    {
+                        label.Text = "Файлы не найдены.";
+                    }
                 }
                 else
                 {
+                    MessageBox.Show("К сожалению, файлы отсутствуют в данной папке. Попробуйте выбрать другую.","Ошибка",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    BlinkButton(button1);
                     label.Text = "Файлы не найдены.";
+
                 }
 
 
 }
             else
             {
-                label.Text = $"Найдено файлов: {FoundFiles.Values.Sum(list => list.Count)}";
+                string resultText = "Найдено файлов:\n";
+                foreach (var category in FoundFiles)
+                {
+                    resultText += $"{category.Key} - {category.Value.Count}\n";
+                }
+                DialogResult SortResult = MessageBox.Show(resultText + "\n\n Подтвердите сортировку файлов", "Результаты поска",MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if(SortResult == DialogResult.Yes)
+                {
+                    await MoveFiles(DefaultPaths, progressBar, label);
+                    label.Text = $"Найдено файлов: {FoundFiles.Values.Sum(list => list.Count)}, Выполняется сортировка";
+                }
+
+                label.Text = $"Найдено файлов: {FoundFiles.Values.Sum(list => list.Count)}, Сортировка отменена";
             }
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Ошибка при поиске файлов: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    public async void BlinkButton(Button button1)
+    {
+        Color originalColor = button1.BackColor;
+        for(int i = 0; i < 6; i++)
+        {
+            button1.BackColor = (i % 2 == 0) ? Color.FromArgb(80, 95, 95) : originalColor;
+            await Task.Delay(300);        
+        }
+        button1.BackColor = originalColor;
     }
 
     public void ResetDefaultPaths()
@@ -159,6 +213,8 @@ public class FileManager
 
                     File.Move(file, destinationPath);
                     progressBar.Value += 1;
+
+                    await Task.Delay(100);
                 }
             }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -20,7 +20,7 @@ namespace Сортировщик
         private void InitializeClasses()
         {
             // Создаем экземпляр FileManager
-            fileManager = new FileManager();
+            fileManager = new FileManager(button1, label2, label3, label4, label5, checkBox1);
 
             // Связываем FileManager с Buttons
             buttons = new Buttons(
@@ -29,6 +29,7 @@ namespace Сортировщик
                 progressBar1,           // Прогресс-бар
                 checkBox1, // Чекбокс поиска в подпапках
                 button3,                // Кнопка 3 (для изменения размеров окна)
+                button5,
                 checkBox2, checkBox3, checkBox4, checkBox5 // Чекбоксы категорий
             );
 
@@ -42,44 +43,29 @@ namespace Сортировщик
         // Дополнительная обработка для кнопок 9-12
         private void button9_Click(object sender, EventArgs e)
         {
-            SelectCategoryPath("Фото");
+            buttons.HandleSelectCategoryPath("Фото", label2);
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            SelectCategoryPath("Видео");
+            buttons.HandleSelectCategoryPath("Видео", label3);
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
-            SelectCategoryPath("Музыка");
+            buttons.HandleSelectCategoryPath("Музыка", label4);
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            SelectCategoryPath("Документы");
-        }
-
-        private void SelectCategoryPath(string category)
-        {
-            using (var folderDialog = new FolderBrowserDialog())
-            {
-                if (folderDialog.ShowDialog() == DialogResult.OK)
-                {
-                    fileManager.DefaultPaths[category] = folderDialog.SelectedPath;
-                    MessageBox.Show($"Путь для категории \"{category}\" установлен в: {folderDialog.SelectedPath}",
-                                    "Путь изменён",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
-                }
-            }
+            buttons.HandleSelectCategoryPath("Документы", label5);
         }
 
         public void INFORMATION()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var status = "Пересборка";
-            var LastUp = "05.12.2024";
+            var LastUp = "09.12.2024";
             this.Text = $"Сортировщик файлов   {version}";
             ver = version.ToString();
             LasTUPe = LastUp;
@@ -174,8 +160,8 @@ namespace Сортировщик
             }
             finally
             {
-                // Скрываем ProgressBar в любом случае
-                progressBar1.Visible = false;
+                progressBar1.Style = ProgressBarStyle.Continuous;
+                progressBar1.Value = 0;
             }
         }
     }

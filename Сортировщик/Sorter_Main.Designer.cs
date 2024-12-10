@@ -114,7 +114,7 @@
             this.button3.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button3.Location = new System.Drawing.Point(12, 148);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(134, 73);
+            this.button3.Size = new System.Drawing.Size(240, 73);
             this.button3.TabIndex = 5;
             this.button3.Text = "Показать параметры переноса файлов";
             this.button3.UseVisualStyleBackColor = false;
@@ -338,6 +338,7 @@
             this.button5.TabIndex = 15;
             this.button5.Text = "Сбросить пути";
             this.button5.UseVisualStyleBackColor = false;
+            this.button5.Visible = false;
             // 
             // Sorter_Main
             // 
