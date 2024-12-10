@@ -1,5 +1,5 @@
 {
-    "Version": "1.0.2.7",
+    "Version": "1.0.2.75",
     "Files": [
         {
             "Name": "Setup.exe",
@@ -9,7 +9,7 @@
         {
             "Name": "Сортировщик.application",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
-            "Checksum": "513b0c483b3bd2672bf157735b42a9f34ac7df947efc8cdcad3e0b5e5f9d459f"
+            "Checksum": "751c1b432129dd9f0921c0e421c73b6fcb70da54e4fc5324a2f95b335a8532fc"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Guna.UI2.dll.deploy",
@@ -29,7 +29,7 @@
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.application",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
-            "Checksum": "513b0c483b3bd2672bf157735b42a9f34ac7df947efc8cdcad3e0b5e5f9d459f"
+            "Checksum": "751c1b432129dd9f0921c0e421c73b6fcb70da54e4fc5324a2f95b335a8532fc"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.config.deploy",
@@ -39,12 +39,12 @@
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.deploy",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.deploy",
-            "Checksum": "0f31d6338bac5dd7cf3d6b45e5e627af6c924d0c8118562f56ea92ade16af00a"
+            "Checksum": "f00ae15ca557920069a23c1a9de22c24165ac7468b07e35cadfd5a5dadbeca12"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.manifest",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.manifest",
-            "Checksum": "7d5c3c87eaa476ba7acb65f846ad186de6f575745fdc4bc6dd2c2d35e968089f"
+            "Checksum": "5b7bc89e33311a6e8a3584cf98522fa54640eb4f0ee394e44d9f90ba3d97f3d0"
         }
     ]
 }
