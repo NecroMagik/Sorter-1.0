@@ -9,7 +9,7 @@
         {
             "Name": "Сортировщик.application",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
-            "Checksum": "751c1b432129dd9f0921c0e421c73b6fcb70da54e4fc5324a2f95b335a8532fc"
+            "Checksum": "9679a11272006d3752e0f956bffd4cfe9bf144436bd82febda427c06d0f38bb6"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Guna.UI2.dll.deploy",
@@ -29,7 +29,7 @@
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.application",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.application",
-            "Checksum": "751c1b432129dd9f0921c0e421c73b6fcb70da54e4fc5324a2f95b335a8532fc"
+            "Checksum": "9679a11272006d3752e0f956bffd4cfe9bf144436bd82febda427c06d0f38bb6"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.config.deploy",
@@ -39,12 +39,12 @@
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.deploy",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.deploy",
-            "Checksum": "f00ae15ca557920069a23c1a9de22c24165ac7468b07e35cadfd5a5dadbeca12"
+            "Checksum": "c69a6336371bc3a301dd0597abcaff9ce2a9482c2217e0bdae1dc3853e330ce8"
         },
         {
             "Name": "Application Files/Сортировщик_1_0_1_5/Сортировщик.exe.manifest",
             "Url": "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Application%20Files/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA_1_0_0_6/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.exe.manifest",
-            "Checksum": "5b7bc89e33311a6e8a3584cf98522fa54640eb4f0ee394e44d9f90ba3d97f3d0"
+            "Checksum": "7290164469e14b35d956a2bbb973062b0d442da86087653026a6b15e7e9cf523"
         }
     ]
 }
