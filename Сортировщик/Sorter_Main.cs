@@ -37,7 +37,6 @@ namespace Сортировщик
             button3.Click += (s, e) => buttons.HandleResizeButtonClick(this, groupBox1, groupBox2);
             button4.Click += (s, e) => buttons.HandleAboutButtonClick(ver, Stat, LasTUPe);
             button5.Click += (s, e) => buttons.HandleResetPathsButtonClick();
-            button6.Click += (s, e) => buttons.HandleLanguageButtonClick();
             button8.Click += (s, e) => buttons.HandleUpdateButtonClick(guna2ProgressBar1);
 
             button9.Click += (s, e) =>  buttons.HandleSelectCategoryPath("Фото", label2);
@@ -52,8 +51,8 @@ namespace Сортировщик
         public void INFORMATION()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var status = "Бета-4";
-            var LastUp = "10.12.2024";
+            var status = "Бета-5";
+            var LastUp = "11.12.2024";
             this.Text = $"Сортировщик файлов   {version}";
             ver = version.ToString();
             LasTUPe = LastUp;

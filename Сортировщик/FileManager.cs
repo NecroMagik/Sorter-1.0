@@ -172,7 +172,7 @@ public class FileManager
         Color originalColor = button1.BackColor;
         for(int i = 0; i < 6; i++)
         {
-            button1.BackColor = (i % 2 == 0) ? Color.FromArgb(80, 95, 95) : originalColor;
+            button1.BackColor = (i % 2 == 0) ? Color.FromArgb(90, 105, 105) : originalColor;
             await Task.Delay(300);        
         }
         button1.BackColor = originalColor;
@@ -212,21 +212,20 @@ public class FileManager
                     {
                         DialogResult result = MessageBox.Show(
                             $"Файл {Path.GetFileName(file)} уже существует в папке {targetFolder}.\n" +
-                            "Вы хотите заменить его?\n" +
-                            "Да -- Заменить файл\n" +
-                            "Нет -- Продолжить с пропуском этого файла\n" +
-                            "Отмена -- Сортировка будет прервана",
+                            "Пропустить данный файлы?\n\n" +
+                            "Да -- Файл будет пропущен\n" +
+                            "Нет -- Сортировка будет отменена",
                             "Конфликт файлов",
                             MessageBoxButtons.YesNoCancel,
                             MessageBoxIcon.Question
                         );
 
-                        if (result == DialogResult.Cancel)
+                        if (result == DialogResult.No)
                         {
                             label.Text = "Перемещение файлов отменено.";
                             return;
                         }
-                        else if (result == DialogResult.No)
+                        else if (result == DialogResult.Yes)
                         {
                             progressBar.Value += 1;
                             continue; // Пропустить файл

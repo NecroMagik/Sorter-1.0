@@ -36,7 +36,6 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -54,6 +53,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.guna2ProgressBar1 = new Guna.UI2.WinForms.Guna2ProgressBar();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +72,7 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.Location = new System.Drawing.Point(12, 28);
             this.button1.Name = "button1";
@@ -83,7 +83,7 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button2.Location = new System.Drawing.Point(153, 28);
             this.button2.Name = "button2";
@@ -112,18 +112,18 @@
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button3.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button3.Location = new System.Drawing.Point(12, 148);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(240, 73);
+            this.button3.Size = new System.Drawing.Size(355, 73);
             this.button3.TabIndex = 5;
             this.button3.Text = "Показать параметры переноса файлов";
             this.button3.UseVisualStyleBackColor = false;
             // 
             // button4
             // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button4.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button4.Location = new System.Drawing.Point(258, 28);
             this.button4.Name = "button4";
@@ -132,20 +132,9 @@
             this.button4.Text = "О приложении";
             this.button4.UseVisualStyleBackColor = false;
             // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
-            this.button6.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button6.Location = new System.Drawing.Point(258, 148);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(109, 73);
-            this.button6.TabIndex = 9;
-            this.button6.Text = "Change Language";
-            this.button6.UseVisualStyleBackColor = false;
-            // 
             // button8
             // 
-            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button8.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button8.Location = new System.Drawing.Point(258, 74);
             this.button8.Name = "button8";
@@ -286,7 +275,7 @@
             // 
             // button12
             // 
-            this.button12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button12.Location = new System.Drawing.Point(6, 108);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(75, 25);
@@ -296,7 +285,7 @@
             // 
             // button11
             // 
-            this.button11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button11.Location = new System.Drawing.Point(6, 77);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(75, 25);
@@ -306,7 +295,7 @@
             // 
             // button10
             // 
-            this.button10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button10.Location = new System.Drawing.Point(6, 46);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(75, 25);
@@ -316,7 +305,7 @@
             // 
             // button9
             // 
-            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.button9.Location = new System.Drawing.Point(6, 15);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(75, 25);
@@ -326,11 +315,11 @@
             // 
             // button5
             // 
-            this.button5.BackColor = System.Drawing.Color.LightSalmon;
+            this.button5.BackColor = System.Drawing.Color.Brown;
             this.button5.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button5.Location = new System.Drawing.Point(153, 148);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(99, 73);
+            this.button5.Size = new System.Drawing.Size(214, 73);
             this.button5.TabIndex = 15;
             this.button5.Text = "Сбросить пути";
             this.button5.UseVisualStyleBackColor = false;
@@ -341,23 +330,35 @@
             this.guna2ProgressBar1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.guna2ProgressBar1.Location = new System.Drawing.Point(12, 120);
             this.guna2ProgressBar1.Name = "guna2ProgressBar1";
-            this.guna2ProgressBar1.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
-            this.guna2ProgressBar1.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
+            this.guna2ProgressBar1.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2ProgressBar1.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.guna2ProgressBar1.Size = new System.Drawing.Size(355, 22);
             this.guna2ProgressBar1.TabIndex = 16;
             this.guna2ProgressBar1.Text = "guna2ProgressBar1";
             this.guna2ProgressBar1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label6.Location = new System.Drawing.Point(351, 7);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(16, 18);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "?";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Sorter_Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.ClientSize = new System.Drawing.Size(379, 436);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.guna2ProgressBar1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button8);
-            this.Controls.Add(this.button6);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label1);
@@ -367,6 +368,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button5);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Sorter_Main";
@@ -391,7 +393,6 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox checkBox5;
@@ -409,5 +410,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button5;
         private Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1;
+        private System.Windows.Forms.Label label6;
     }
 }

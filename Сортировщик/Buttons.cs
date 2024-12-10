@@ -130,12 +130,7 @@ public class Buttons
     {
         button5.Visible = false;
         fileManager.ResetDefaultPaths();
-        button3.Size = new System.Drawing.Size(240, 73); // Сбросить размер
-    }
-
-    public void HandleLanguageButtonClick()
-    {
-        // Позже реализуем локализацию
+        button3.Size = new System.Drawing.Size(355, 73); // Сбросить размер
     }
 
     public void HandleSelectCategoryPath(string category, Label label)
