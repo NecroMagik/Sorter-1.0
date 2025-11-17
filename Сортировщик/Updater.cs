@@ -12,21 +12,47 @@ using Guna.UI2.WinForms;
 
 public class Updater
 {
-    private readonly string manifestUrl = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
+    private string manifestUrll;
+
+    private string ManifestUrl()
+    {
+        if (radioButton1.Checked)
+        {
+
+        }
+        else if (radioButton2.Checked)
+        {
+
+        }
+        else if (radioButton3.Checked)
+        {
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
+        }
+        return null;
+    }
+    
+    
     private readonly string changelogUrl = "https://raw.githubusercontent.com/NecroMagik/Sorter-1.0/refs/heads/Release/releases/ChangeLog.txt";
     private Guna2ProgressBar progressBar;
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
 
-    public Updater(Guna2ProgressBar progressBar)
+    public Updater(Guna2ProgressBar progressBar, RadioButton radioButton1, RadioButton radioButton2, RadioButton radioButton3)
     {
         this.progressBar = progressBar;
+        this.radioButton1 = radioButton1;
+        this.radioButton2 = radioButton2;
+        this.radioButton3 = radioButton3;
     }
 
     // Загрузка манифеста
     public async Task<string> DownloadManifestAsync(string tempFolder)
     {
+        ManifestUrl();
         using (HttpClient client = new HttpClient())
         {
-            string manifestData = await client.GetStringAsync(manifestUrl);
+            string manifestData = await client.GetStringAsync(manifestUrll);
             string manifestPath = Path.Combine(tempFolder, "update_manifest.json");
             File.WriteAllText(manifestPath, manifestData);
             return manifestPath;

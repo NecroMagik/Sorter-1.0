@@ -16,8 +16,11 @@ public class Buttons
     private CheckBox[] categoryCheckBoxes;
     private Button button3;
     private Button button5;
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
 
-    public Buttons(FileManager fileManager, Label statusLabel, Guna2ProgressBar guna2ProgressBar1, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, params CheckBox[] categoryCheckBoxes)
+    public Buttons(FileManager fileManager, Label statusLabel, Guna2ProgressBar guna2ProgressBar1, CheckBox searchSubfoldersCheckBox, Button button3, Button button5, RadioButton radioButton1, RadioButton radioButton2, RadioButton radioButton3, params CheckBox[] categoryCheckBoxes)
     {
        this.fileManager = fileManager;
         this.statusLabel = statusLabel;
@@ -25,6 +28,9 @@ public class Buttons
         this.categoryCheckBoxes = categoryCheckBoxes;
         this.button3 = button3;
         this.button5 = button5;
+        this.radioButton1 = radioButton1;
+        this.radioButton2 = radioButton2;
+        this.radioButton3 = radioButton3;
         this.guna2ProgressBar1 = guna2ProgressBar1;
         guna2ProgressBar1.Value = 0;
     }
@@ -44,7 +50,7 @@ public class Buttons
     // Метод для кнопки 8 (Проверка обновлений)
     public async void HandleUpdateButtonClick(Guna2ProgressBar guna2ProgressBar1)
     {
-        var updater = new Updater(guna2ProgressBar1);
+        var updater = new Updater(guna2ProgressBar1, radioButton1, radioButton2, radioButton3);
 
         try
         {
@@ -112,17 +118,17 @@ public class Buttons
 
     public void HandleResizeButtonClick(Form form, GroupBox groupBox1, GroupBox groupBox2)
     {
-        if (form.Size.Height == 272)
+        if (form.Size.Height == 670)
         {
-            form.Size = new System.Drawing.Size(395, 475);
-            groupBox1.Visible = true;
-            groupBox2.Visible = true;
+            form.Size = new System.Drawing.Size(428, 313);
+            groupBox1.Visible = false;
+            groupBox2.Visible = false;
         }
         else
         {
-            form.Size = new System.Drawing.Size(395, 272);
-            groupBox1.Visible = false;
-            groupBox2.Visible = false;
+            form.Size = new System.Drawing.Size(428, 670);
+            groupBox1.Visible = true;
+            groupBox2.Visible = true;
         }
     }
 
@@ -130,7 +136,7 @@ public class Buttons
     {
         button5.Visible = false;
         fileManager.ResetDefaultPaths();
-        button3.Size = new System.Drawing.Size(355, 73); // Сбросить размер
+        button3.Size = new System.Drawing.Size(389, 73); // Сбросить размер
     }
 
     public void HandleSelectCategoryPath(string category, Label label)
@@ -157,7 +163,7 @@ public class Buttons
         if (button5.Visible == false)
         {
             button5.Visible = true;
-            button3.Size = new System.Drawing.Size(134, 73);
+            button3.Size = new System.Drawing.Size(235, 73);
         }
     }
 

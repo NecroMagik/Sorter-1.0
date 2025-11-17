@@ -28,6 +28,9 @@ namespace Сортировщик
                 checkBox1, // Чекбокс поиска в подпапках
                 button3,                // Кнопка 3 (для изменения размеров окна)
                 button5,
+                radioButton1,
+                radioButton2,
+                radioButton3,
                 checkBox2, checkBox3, checkBox4, checkBox5 // Чекбоксы категорий
             );
 
@@ -51,8 +54,8 @@ namespace Сортировщик
         public void INFORMATION()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var status = "Бета-5";
-            var LastUp = "11.12.2024";
+            var status = "Бета-5.5 (Ветка: Rebuild)";
+            var LastUp = "14.11.2025";
             this.Text = $"Сортировщик файлов   {version}";
             ver = version.ToString();
             LasTUPe = LastUp;
@@ -63,7 +66,7 @@ namespace Сортировщик
         private void Sorter_Main_Load(object sender, EventArgs e)       //Загрузка приложения
         {
             INFORMATION();
-            this.Size = new System.Drawing.Size(395, 272);
+            this.Size = new System.Drawing.Size(428, 313);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -87,6 +90,16 @@ namespace Сортировщик
             }
 
             base.OnFormClosing(e);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
