@@ -237,7 +237,7 @@ namespace Сортировщик
 // Проверка обновлений
 private async void button3_Click(object sender, EventArgs e)
     {
-        var updater = new Updater();
+        var updater = new Updater(progressBar1, radioButton1, radioButton2, radioButton3);
 
         try
         {
@@ -288,7 +288,7 @@ private async void button3_Click(object sender, EventArgs e)
                     progressBar1.Value = 0;
 
                     // Запускаем процесс обновления
-                    await updater.DownloadAndInstallUpdateAsync(progressBar1);
+                    await updater.DownloadAndInstallUpdateAsync();
                 }
             }
             else

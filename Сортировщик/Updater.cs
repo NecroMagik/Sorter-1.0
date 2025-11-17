@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Deployment.Application;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -12,15 +11,49 @@ using Сортировщик;
 
 public class Updater
 {
-    private readonly string manifestUrl = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
+    private string manifestUrll;
+
+    private string ManifestUrl()
+    {
+        if (radioButton1.Checked)
+        {
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
+
+        }
+        else if (radioButton2.Checked)
+        {
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Alpha_Manifest.json";
+
+        }
+        else if (radioButton3.Checked)
+        {
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Rebuild_Manifest.json";
+        }
+        return null;
+    }
+
+
     private readonly string changelogUrl = "https://raw.githubusercontent.com/NecroMagik/Sorter-1.0/refs/heads/Release/releases/ChangeLog.txt";
+    private ProgressBar progressBar;
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
+
+    public Updater(ProgressBar progressBar, RadioButton radioButton1, RadioButton radioButton2, RadioButton radioButton3)
+    {
+        this.progressBar = progressBar;
+        this.radioButton1 = radioButton1;
+        this.radioButton2 = radioButton2;
+        this.radioButton3 = radioButton3;
+    }
 
     // Загрузка манифеста
     public async Task<string> DownloadManifestAsync(string tempFolder)
     {
+        ManifestUrl();
         using (HttpClient client = new HttpClient())
         {
-            string manifestData = await client.GetStringAsync(manifestUrl);
+            string manifestData = await client.GetStringAsync(manifestUrll);
             string manifestPath = Path.Combine(tempFolder, "update_manifest.json");
             File.WriteAllText(manifestPath, manifestData);
             return manifestPath;
@@ -53,7 +86,7 @@ public class Updater
     }
 
     // Загрузка и установка обновления
-    public async Task DownloadAndInstallUpdateAsync(ProgressBar progressBar)
+    public async Task DownloadAndInstallUpdateAsync()
     {
         using (HttpClient client = new HttpClient())
         {
@@ -94,6 +127,7 @@ public class Updater
     private void LaunchInstallerAndExit(string setupFilePath)
     {
         Process.Start(setupFilePath);
+        Sorter_Main sorter = new Sorter_Main();
 
         // Удаление ClickOnce-приложения
         try
@@ -101,15 +135,15 @@ public class Updater
             string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Apps", "2.0");
             if (Directory.Exists(appDataPath))
             {
+                sorter.Visible = false;
                 Directory.Delete(appDataPath, true);
             }
         }
-        catch (Exception ex)
+        catch
         {
-            MessageBox.Show($"Ошибка при удалении старой версии: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
         }
-        Form1 form1 = new Form1();
-        form1.Visible = false;
+
         Environment.Exit(0);
     }
 
