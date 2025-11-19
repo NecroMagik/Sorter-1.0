@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Сортировщик
 {
@@ -153,7 +154,7 @@ namespace Сортировщик
 
 
 
-            
+
 
         #endregion
 
@@ -162,9 +163,76 @@ namespace Сортировщик
 
         //рописать алгоритм проверки обновлений на выделенном сервере
 
-        private void button3_Click(object sender, EventArgs e)     //Проверка обновления
+        private async void button3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Скоро станет доступно");
+            var updater = new Updater(progressBar1, radioButton1, radioButton2, radioButton3);
+
+            try
+            {
+                // Текущая версия приложения
+                string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+                // Папка для временных файлов
+                string tempFolder = Path.Combine(Path.GetTempPath(), "Sorter");
+                if (!Directory.Exists(tempFolder))
+                {
+                    Directory.CreateDirectory(tempFolder);
+                }
+
+                // Показываем прогрессбар
+                progressBar1.Visible = true;
+                progressBar1.Style = ProgressBarStyle.Marquee;
+
+                // Скачиваем манифест
+                string manifestPath = await updater.DownloadManifestAsync(tempFolder);
+
+                // Читаем манифест
+                Updater.UpdateManifest manifest = updater.ReadManifest(manifestPath);
+                string latestVersion = manifest.Version;
+
+                if (string.IsNullOrEmpty(latestVersion))
+                {
+                    MessageBox.Show("Ошибка при получении версии. Попробуйте позже.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Сравнение версий
+                if (string.Compare(currentVersion, latestVersion) < 0)
+                {
+                    // Получение списка изменений
+                    string changelog = await updater.GetChangelogAsync();
+                    changelog = changelog ?? "Нет доступного списка изменений.";
+
+                    // Предложение обновления
+                    DialogResult result = MessageBox.Show(
+                        $"Доступна новая версия {latestVersion}.\n\nСписок изменений:\n{changelog}\n\nОбновить сейчас?",
+                        "Обновление доступно",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        progressBar1.Style = ProgressBarStyle.Continuous;
+                        progressBar1.Value = 0;
+
+                        // Запускаем процесс обновления
+                        await updater.DownloadAndInstallUpdateAsync();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("У вас установлена последняя версия приложения.", "Обновлений нет", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при проверке обновлений: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Скрываем ProgressBar в любом случае
+                progressBar1.Visible = false;
+            }
         }
 
         #endregion
