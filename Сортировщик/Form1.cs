@@ -25,8 +25,8 @@ namespace Сортировщик
         private void Form1_Load(object sender, EventArgs e)  //Загрузка формы
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var status = "Реализовывание переноса файлов";
-            var LastUp = "17.09.2024";
+            var status = "Добавлены ветки обновлений";
+            var LastUp = "25.11.2025";
             label1.Text = $"Версия: {version}";
             label2.Text = $"Статус: {status}";
             label3.Text = $"Последние изменения: {LastUp}";
