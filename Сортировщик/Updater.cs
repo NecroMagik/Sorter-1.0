@@ -88,41 +88,136 @@ public class Updater
     // Загрузка и установка обновления
     public async Task DownloadAndInstallUpdateAsync()
     {
+        string logDirectory = @"C:\Users\NecroMagik\ZeN\UpdateLog";
+        string logFilePath = Path.Combine(logDirectory, $"{DateTime.Now:yyyy-MM-dd}.log");
+
+        // Создаем директорию для логов если не существует
+        Directory.CreateDirectory(logDirectory);
+
+        using (StreamWriter logWriter = new StreamWriter(logFilePath, true))
         using (HttpClient client = new HttpClient())
         {
-            string tempFolder = Path.Combine(Path.GetTempPath(), "Sorter");
-            string manifestPath = await DownloadManifestAsync(tempFolder);
-            UpdateManifest manifest = ReadManifest(manifestPath);
+            await LogMessageAsync(logWriter, "INFO", "Начало процесса обновления");
 
-            int progressStep = 100 / manifest.Files.Count;
-            progressBar.Value = 0;
-
-            foreach (var file in manifest.Files)
+            try
             {
-                string filePath = Path.Combine(tempFolder, file.Name);
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                string tempFolder = Path.Combine(Path.GetTempPath(), "Sorter");
 
-                using (var response = await client.GetAsync(file.Url))
+                await LogMessageAsync(logWriter, "MANIFEST", "Загрузка манифеста обновления");
+                string manifestPath = await DownloadManifestAsync(tempFolder);
+                UpdateManifest manifest = ReadManifest(manifestPath);
+                await LogMessageAsync(logWriter, "MANIFEST", $"Манифест загружен. Файлов для обновления: {manifest.Files.Count}");
+
+                int progressStep = 100 / manifest.Files.Count;
+                progressBar.Value = 0;
+
+                foreach (var file in manifest.Files)
                 {
-                    response.EnsureSuccessStatusCode();
-                    byte[] fileData = await response.Content.ReadAsByteArrayAsync();
+                    await LogMessageAsync(logWriter, "DOWNLOAD", $"Начало загрузки файла: {file.Name}");
 
-                    if (!VerifyChecksum(fileData, file.Checksum))
-                        throw new Exception($"Контрольная сумма файла {file.Name} не совпадает!");
+                    string filePath = Path.Combine(tempFolder, file.Name);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                    File.WriteAllBytes(filePath, fileData);
+                    using (var response = await client.GetAsync(file.Url))
+                    {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            string errorMsg = $"Ошибка загрузки файла {file.Name}. HTTP статус: {response.StatusCode}";
+                            await LogMessageAsync(logWriter, "DOWNLOAD_ERROR", errorMsg);
+                            throw new Exception($"Ошибка загрузки файла. Подробности в логе: {logFilePath}");
+                        }
+
+                        byte[] fileData = await response.Content.ReadAsByteArrayAsync();
+                        await LogMessageAsync(logWriter, "DOWNLOAD", $"Файл {file.Name} загружен. Размер: {fileData.Length} байт");
+
+                        await LogMessageAsync(logWriter, "CHECKSUM", $"Проверка контрольной суммы файла: {file.Name}");
+                        var checksumResult = VerifyChecksum(fileData, file.Checksum);
+                        if (!checksumResult.IsValid)
+                        {
+                            string checksumError = $"Контрольная сумма файла {file.Name} не совпадает!\n" +
+                                                  $"Ожидалось: {file.Checksum}\n" +
+                                                  $"Получено:  {checksumResult.ActualChecksum}";
+                            await LogMessageAsync(logWriter, "CHECKSUM_ERROR", checksumError);
+                            throw new Exception($"Ошибка проверки целостности файла. Проверьте лог: {logFilePath}");
+                        }
+                        await LogMessageAsync(logWriter, "CHECKSUM", $"Контрольная сумма файла {file.Name} проверена успешно");
+
+                        File.WriteAllBytes(filePath, fileData);
+                        await LogMessageAsync(logWriter, "DOWNLOAD", $"Файл {file.Name} сохранен по пути: {filePath}");
+                    }
+
+                    progressBar.Value += progressStep;
+                    await LogMessageAsync(logWriter, "PROGRESS", $"Прогресс обновления: {progressBar.Value}%");
                 }
 
-                progressBar.Value += progressStep;
+                await LogMessageAsync(logWriter, "INSTALLER", "Поиск файла установщика");
+                string setupFilePath = Path.Combine(tempFolder, "Setup.exe");
+                if (!File.Exists(setupFilePath))
+                {
+                    string setupError = "Файл Setup.exe не найден!";
+                    await LogMessageAsync(logWriter, "INSTALLER_ERROR", setupError);
+                    throw new Exception($"Файл установщика не найден. Проверьте лог: {logFilePath}");
+                }
+
+                await LogMessageAsync(logWriter, "INSTALLER", $"Запуск установщика: {setupFilePath}");
+                LaunchInstallerAndExit(setupFilePath);
+
+                await LogMessageAsync(logWriter, "INFO", "Процесс обновления завершен успешно");
             }
+            catch (HttpRequestException ex)
+            {
+                await LogMessageAsync(logWriter, "NETWORK_ERROR", $"Сетевая ошибка: {ex.Message}");
+                throw new Exception($"Ошибка сети при обновлении. Проверьте лог: {logFilePath}");
+            }
+            catch (IOException ex)
+            {
+                await LogMessageAsync(logWriter, "IO_ERROR", $"Ошибка ввода-вывода: {ex.Message}");
+                throw new Exception($"Ошибка файловой системы. Проверьте лог: {logFilePath}");
+            }
+            catch (Exception ex)
+            {
+                // Если это уже наше исключение с ссылкой на лог, просто пробрасываем дальше
+                if (ex.Message.Contains("лог"))
+                    throw;
 
-            string setupFilePath = Path.Combine(tempFolder, "Setup.exe");
-            if (!File.Exists(setupFilePath))
-                throw new FileNotFoundException("Файл Setup.exe не найден!");
-
-            LaunchInstallerAndExit(setupFilePath);
+                await LogMessageAsync(logWriter, "GENERAL_ERROR", $"Общая ошибка: {ex.Message}");
+                throw new Exception($"Произошла ошибка при обновлении. Проверьте лог: {logFilePath}");
+            }
         }
     }
+
+
+    // Вспомогательный метод для логирования
+    private async Task LogMessageAsync(StreamWriter writer, string category, string message)
+    {
+        string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] [{category}] {message}";
+        await writer.WriteLineAsync(logEntry);
+        await writer.FlushAsync(); // Обеспечиваем немедленную запись в файл
+    }
+
+    // Класс для результата проверки контрольной суммы
+    private class ChecksumResult
+    {
+        public bool IsValid { get; set; }
+        public string ActualChecksum { get; set; }
+    }
+
+    // Метод для проверки контрольной суммы с возвратом результата
+    private ChecksumResult VerifyChecksum(byte[] data, string expectedChecksum)
+    {
+        using (var sha256 = System.Security.Cryptography.SHA256.Create())
+        {
+            byte[] hash = sha256.ComputeHash(data);
+            string actualChecksum = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+
+            return new ChecksumResult
+            {
+                IsValid = actualChecksum.Equals(expectedChecksum, StringComparison.OrdinalIgnoreCase),
+                ActualChecksum = actualChecksum
+            };
+        }
+    }
+
 
     private void LaunchInstallerAndExit(string setupFilePath)
     {
@@ -145,16 +240,6 @@ public class Updater
         }
 
         Environment.Exit(0);
-    }
-
-    private bool VerifyChecksum(byte[] fileData, string expectedChecksum)
-    {
-        using (SHA256 sha256 = SHA256.Create())
-        {
-            byte[] hash = sha256.ComputeHash(fileData);
-            string computedChecksum = BitConverter.ToString(hash).Replace("-", "").ToLower();
-            return computedChecksum == expectedChecksum;
-        }
     }
 
     public class UpdateManifest
