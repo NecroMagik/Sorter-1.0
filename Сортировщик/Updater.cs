@@ -18,20 +18,22 @@ public class Updater
     {
         if (radioButton1.Checked)
         {
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
 
         }
         else if (radioButton2.Checked)
         {
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Alpha_Manifest.json";
 
         }
         else if (radioButton3.Checked)
         {
-            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/update_manifest.json";
+            manifestUrll = "https://github.com/NecroMagik/Sorter-1.0/raw/refs/heads/Release/releases/Rebuild_Manifest.json";
         }
         return null;
     }
-    
-    
+
+
     private readonly string changelogUrl = "https://raw.githubusercontent.com/NecroMagik/Sorter-1.0/refs/heads/Release/releases/ChangeLog.txt";
     private Guna2ProgressBar progressBar;
     private RadioButton radioButton1;
